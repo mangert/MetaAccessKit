@@ -6,7 +6,7 @@ import "../erc20/AmetistToken.sol";
 
 /**
  * @title ERC20Proxy
- * @notice контракn для тестирования функционала Permit в токене ERC20
+ * @notice вспомогательный контракт для тестирования функционала Permit в токене ERC20
  */
 contract ERC20Proxy {
     
@@ -21,8 +21,6 @@ contract ERC20Proxy {
         bytes32 s
     ) external {
         token.permit(owner, spender, value, deadline, v, r, s);
-
-
     }
 
 

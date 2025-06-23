@@ -3,4 +3,6 @@ import { ethers } from "hardhat";
 import { expect } from "chai";
 import "@nomicfoundation/hardhat-chai-matchers";
 
-export { loadFixture, ethers, expect };
+import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
+
+export { loadFixture, ethers, expect, SignerWithAddress };
