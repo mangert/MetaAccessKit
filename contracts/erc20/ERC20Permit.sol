@@ -3,20 +3,34 @@ pragma solidity ^0.8.29;
 
 import {IERC20Permit} from "./IERC20Permit.sol";
 
-import "@openzeppelin/contracts/token/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 import "@openzeppelin/contracts/utils/Nonces.sol";
 
-abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712{
-
-    mapping(address => nonces) private _nonces;
-      
+abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712, Nonces{
+    
+    //контстанта  для описания формы сообщения, которое пользователь должен подписать при вызове
     bytes32 private constant PERMIT_TYPEHASH = keccak256
         ("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)");
-    
-    constructor(string memory name) EIP712(name, "1") {};
 
+    //описания кастомных ошибок
+    /**
+     * @notice ошибка индицирует истечение дедлайна
+     * @param deadline - срок дедлайна
+     */
+    error ERC2612ExpiredSignature(uint256 deadline);
+
+    /**
+     * @notice ошибка индицирует неверную подпись
+     * @param signer - подписант
+     * @param owner - владелец
+     */
+    error ERC2612InvalidSigner(address signer, address owner);    
+    
+    constructor(string memory name) EIP712(name, "1") {}
+
+    //реализация функции интерфейса IERC20Permit
     function permit(
         address owner,
         address spender,
@@ -26,35 +40,39 @@ abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712{
         bytes32 r,
         bytes32 s
     ) external virtual {
-        require(block.timestamp <= deadline, "expired"); //TODO - сделать кастомную ошибку
+        require(block.timestamp <= deadline, ERC2612ExpiredSignature(deadline)); 
         
         bytes32 structHash = keccak256(
             abi.encode(
-                PERMIT_TYPEHASH,
+                PERMIT_TYPEHASH, //стандартная константа
                 owner,
                 spender,
                 value,
-                _useNonce(owner),
+                _useNonce(owner), //функция определена в Nonces.sol
                 deadline
             )
         );
 
         bytes32 hash = _hashTypedDataV4(structHash);
 
-        address signer = ECDSA.recover(hash, v, r, s);
+        address signer = ECDSA.recover(hash, v, r, s); //восстанавливаем подписанта
 
-        require(signer == owner, "not an owner"); //TODO - сделать кастомную ошибку
-        _approve(owner, spender, value);
+        require(signer == owner, ERC2612InvalidSigner(signer, owner)); //и проверяем, что подписал владелец
+        
+        _approve(owner, spender, value); //даем разрешение на использование токенов
             
-        }
+    }    
 
-
+    /**
+     * @notice Реализация публичной функции для интерфейса IERC20Permit
+     * @notice Функция проксирует вызов к Nonces, где всё хранится и обновляется.
+     * @param owner - адрес владельца, для которого считаем нонсы
+     */
+    function nonces(address owner) public view virtual override(IERC20Permit, Nonces) returns (uint256) {
+        return super.nonces(owner);
     }
-
-    function nonces(address owner) external view returns (uint256) {};
     
-    function DOMAIN_SEPARATOR() external view returns (bytes32) {};
-
-
-    
+    function DOMAIN_SEPARATOR() external view returns (bytes32) {
+        return _domainSeparatorV4();
+    }        
 }
