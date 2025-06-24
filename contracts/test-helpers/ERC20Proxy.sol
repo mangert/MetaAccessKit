@@ -11,7 +11,7 @@ import "../erc20/AmetistToken.sol";
 contract ERC20Proxy {
     
     function doSend (    
-        AmetistToken token,
+        address token,
         address owner,
         address spender,
         uint256 value,
@@ -20,7 +20,7 @@ contract ERC20Proxy {
         bytes32 r,
         bytes32 s
     ) external {
-        token.permit(owner, spender, value, deadline, v, r, s);
+        AmetistToken(token).permit(owner, spender, value, deadline, v, r, s);
     }
 
 

@@ -40,7 +40,7 @@ abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712, Nonces{
         bytes32 r,
         bytes32 s
     ) external virtual {
-        require(block.timestamp <= deadline, ERC2612ExpiredSignature(deadline)); 
+        require(block.timestamp <= deadline, ERC2612ExpiredSignature(deadline)); //сначала проверяем дедлайн
         
         bytes32 structHash = keccak256(
             abi.encode(

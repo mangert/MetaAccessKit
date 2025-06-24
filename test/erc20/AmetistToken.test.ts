@@ -41,6 +41,15 @@ function createTypedERC2612Data(message: ERC2612PermitMessage, domain: Domain){
     }
 }
 
+function splitSignatureToRSV(signature: string): RSV {
+    
+    const r = '0x' + signature.substring(2).substring(0, 64);
+    const s = '0x' + signature.substring(2).substring(64, 128);
+    const v = parseInt(signature.substring(2).substring(128, 130), 16);
+
+    return {r, s, v};
+}
+
 async function signERC2612Permit(
     tokenAddress: string, 
     owner: string,
@@ -75,9 +84,9 @@ async function signERC2612Permit(
     );
     const sig = splitSignatureToRSV(rawSignature);
     
-    return {...sig, ...message};
-    
-    }
+    return {...sig, ...message};    
+}
+
 
 
 describe("AmetistToken", function() {
@@ -113,25 +122,49 @@ describe("AmetistToken", function() {
         it("should permit", async function(){
             
             const {user0, user1, ame_Token, proxy} = await loadFixture(deploy);
-            const tokenAddress = ame_Token.address;
+            const mint = await ame_Token.mint(user0, 100n);
+                
+            
+
+
+            const tokenAddress = await ame_Token.getAddress();
             const owner = user0.address;
             const spender = user1.address;
-            const amount = 15n;
+            const amount = 15;
             const deadline = Math.floor(Date.now() / 1000) + 1000;
             const nonce = 0;
 
-            const result = signERC2612Permit(
+            const result = await signERC2612Permit(
                 tokenAddress, 
                 owner, 
                 spender,
                 amount,
                 deadline,
+                nonce,
                 user0
             );
+            console.log(result);
+            
+            const tx = await proxy.connect(user1).doSend(
+                tokenAddress, 
+                owner, 
+                spender,
+                amount,
+                deadline,                
+                result.v,
+                result.r,
+                result.s
+            );
+            await tx.wait(1);
 
+            console.log("NONCES ", await ame_Token.nonces(user0));
+            console.log("ALLOWANCE BEFORE", await ame_Token.allowance(owner, spender));
 
+            const transferTx = await ame_Token.connect(user1).transferFrom(owner, spender, 10n);
+            await transferTx.wait(1);
 
-
+            await expect(transferTx).to.changeTokenBalance(ame_Token, user1, 10);
+            console.log("ALLOWANCE AFTER", await ame_Token.allowance(owner, spender));
 
 
 
