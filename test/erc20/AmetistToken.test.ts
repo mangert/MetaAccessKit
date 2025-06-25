@@ -1,93 +1,5 @@
-import { version } from "hardhat";
-import { loadFixture, ethers, expect, SignerWithAddress } from "../setup";
-
-const tokenName = "Ametist";
-
-interface ERC2612PermitMessage {
-    owner: string;
-    spender: string;
-    value: number | string;
-    nonce: number | string;
-    deadline: number | string;
-}
-
-interface RSV {
-    r: string;
-    s: string;
-    v: number;
-}
-
-interface Domain {
-    name: string,
-    version: string,
-    chainId: number;
-    verifyingContract: string;
-}
-
-function createTypedERC2612Data(message: ERC2612PermitMessage, domain: Domain){
-    return{
-        types: {
-            Permit: [
-                { name: "owner", type: "address"},
-                { name: "spender", type: "address"},
-                { name: "value", type: "uint256"},
-                { name: "nonce", type: "uint256"},
-                { name: "deadline", type: "uint256"},
-            ]
-        },
-        primaryType: "Permit",
-        domain,
-        message,
-    }
-}
-
-function splitSignatureToRSV(signature: string): RSV {
-    
-    const r = '0x' + signature.substring(2).substring(0, 64);
-    const s = '0x' + signature.substring(2).substring(64, 128);
-    const v = parseInt(signature.substring(2).substring(128, 130), 16);
-
-    return {r, s, v};
-}
-
-async function signERC2612Permit(
-    tokenAddress: string, 
-    owner: string,
-    spender: string,
-    value: string | number,
-    deadline: number,
-    nonce: number,
-    signer: SignerWithAddress                
-): Promise<ERC2612PermitMessage & RSV> {
-    
-    const message: ERC2612PermitMessage = {
-        owner,
-        spender,
-        value,
-        nonce,
-        deadline,
-    };
-
-    const domain: Domain =  {
-        name : tokenName,
-        version: "1",
-        chainId: 1337,
-        verifyingContract: tokenAddress
-    };
-
-    const typedData = createTypedERC2612Data(message, domain);
-    console.log(typedData);
-    const rawSignature = await signer.signTypedData(
-        typedData.domain,
-        typedData.types,
-        typedData.message
-    );
-    const sig = splitSignatureToRSV(rawSignature);
-    
-    return {...sig, ...message};    
-}
-
-
+import { loadFixture, ethers, expect  } from "../setup";
+import { signERC2612Permit, tokenName } from "./helpers";
 
 describe("AmetistToken", function() {
     async function deploy() {        
@@ -103,12 +15,10 @@ describe("AmetistToken", function() {
         const proxy = await proxy_Factory.deploy();
         await proxy.waitForDeployment();
 
-
         return { user0, user1, user2, ame_Token, proxy }
     }
 
-
-    describe("deployment tеsts", function() {
+    describe("deployment tеsts", function() { //примитивный тест на деплой - просто проверить, что общая часть работает
         it("should be deployed", async function() {
             const { ame_Token } = await loadFixture(deploy);        
             
@@ -118,23 +28,22 @@ describe("AmetistToken", function() {
         });
     });
     
-    describe("permit tеsts", function() {
+    describe("permit tеsts", function() { //блок тестов для тестирования функционала "Permit"
         it("should permit", async function(){
             
             const {user0, user1, ame_Token, proxy} = await loadFixture(deploy);
-            const mint = await ame_Token.mint(user0, 100n);
-                
+            const mintTx = await ame_Token.mint(user0, 100n); //наимнтим немного, чтобы было что передавать
+
+            //исходные данные для передачи разрешений
+            const tokenAddress = await ame_Token.getAddress(); //сам токен
+            const owner = user0.address; //адрес владельца токенов
+            const spender = user1.address; //адрес транжиры токенов
             
+            const amount = 15; //сумма, которую разрешим потратить
+            const deadline = Math.floor(Date.now() / 1000) + 1000; //делдлайн - 1000 секунд
+            const nonce = Number((await ame_Token.nonces(owner))); //берем начальный nonce владельца и обрезаем до number (чтобы с BigInt не возиться)
 
-
-            const tokenAddress = await ame_Token.getAddress();
-            const owner = user0.address;
-            const spender = user1.address;
-            const amount = 15;
-            const deadline = Math.floor(Date.now() / 1000) + 1000;
-            const nonce = 0;
-
-            const result = await signERC2612Permit(
+            const result = await signERC2612Permit( //получааем подписанное сообщение
                 tokenAddress, 
                 owner, 
                 spender,
@@ -142,9 +51,10 @@ describe("AmetistToken", function() {
                 deadline,
                 nonce,
                 user0
-            );
-            console.log(result);
+            );            
             
+            //отравляем транзацкцию permit на выдачу разрешения от user1 через стронний proxy-контракт
+            //(прокси-контракт через doSend вызывает функцию permit)
             const tx = await proxy.connect(user1).doSend(
                 tokenAddress, 
                 owner, 
@@ -157,16 +67,17 @@ describe("AmetistToken", function() {
             );
             await tx.wait(1);
 
-            console.log("NONCES ", await ame_Token.nonces(user0));
-            console.log("ALLOWANCE BEFORE", await ame_Token.allowance(owner, spender));
-
-            const transferTx = await ame_Token.connect(user1).transferFrom(owner, spender, 10n);
+            expect(await ame_Token.nonces(user0)).eq(1);
+            expect(await ame_Token.allowance(owner, spender)).eq(amount);
+            
+            //пробуем истратить токены user0 (owner) от имени user1 (spender)
+            const spentAmount = 10;
+            const transferTx = await ame_Token.connect(user1).transferFrom(owner, spender, spentAmount);
             await transferTx.wait(1);
-
-            await expect(transferTx).to.changeTokenBalance(ame_Token, user1, 10);
-            console.log("ALLOWANCE AFTER", await ame_Token.allowance(owner, spender));
-
-
+            //смотрим, что получилось после перевода
+            await expect(transferTx).to.changeTokenBalance(ame_Token, user1, spentAmount);
+            await expect(transferTx).to.changeTokenBalance(ame_Token, user0, -spentAmount);
+            expect(await ame_Token.allowance(owner, spender)).eq(amount-spentAmount);
 
         })    
         
