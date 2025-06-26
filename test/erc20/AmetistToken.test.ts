@@ -1,3 +1,4 @@
+import { network } from "hardhat";
 import { loadFixture, ethers, expect  } from "../setup";
 import { signERC2612Permit, tokenName } from "./helpers";
 
@@ -66,9 +67,10 @@ describe("AmetistToken", function() {
                 result.s
             );
             await tx.wait(1);
-
+            //проверяем, что получилось после permit approve
+            await expect(tx).to.emit(ame_Token, "Approval").withArgs(owner, spender, amount)
             expect(await ame_Token.nonces(user0)).eq(1);
-            expect(await ame_Token.allowance(owner, spender)).eq(amount);
+            expect(await ame_Token.allowance(owner, spender)).eq(amount);            
             
             //пробуем истратить токены user0 (owner) от имени user1 (spender)
             const spentAmount = 10;
@@ -80,6 +82,88 @@ describe("AmetistToken", function() {
             expect(await ame_Token.allowance(owner, spender)).eq(amount-spentAmount);
 
         })    
+
+        it("should revert permit expired time", async function(){
+        const {user0, user1, ame_Token } = await loadFixture(deploy);
+            const mintTx = await ame_Token.mint(user0, 100n); //наимнтим немного, чтобы было что передавать
+
+            //исходные данные для передачи разрешений
+            const tokenAddress = await ame_Token.getAddress(); //сам токен
+            const owner = user0.address; //адрес владельца токенов
+            const spender = user1.address; //адрес транжиры токенов
+            
+            const amount = 15; //сумма, которую разрешим потратить
+            const deadline = Math.floor(Date.now() / 1000) + 1000; //делдлайн - 1000 секунд
+            const nonce = Number((await ame_Token.nonces(owner))); //берем начальный nonce владельца и обрезаем до number (чтобы с BigInt не возиться)
+
+            const result = await signERC2612Permit( //получааем подписанное сообщение
+                tokenAddress, 
+                owner, 
+                spender,
+                amount,
+                deadline,
+                nonce,
+                user0
+            );            
+
+            //пропускаем время
+            const now = (await ethers.provider.getBlock("latest"))!.timestamp;
+            const timeToAdd = 12 * 60 * 60; // 12 часов
+            const futureTime = now + timeToAdd;
+
+            await network.provider.send("evm_setNextBlockTimestamp", [futureTime]);
+            await network.provider.send("evm_mine");
+            //формируем  транзацкцию permit на выдачу разрешения от user1 (promise, пока не отравляем)
+            const tx = ame_Token.connect(user1).permit(                
+                owner, 
+                spender,
+                amount,
+                deadline,                
+                result.v,
+                result.r,
+                result.s
+            );            
+            await expect(tx).revertedWithCustomError(ame_Token, "ERC2612ExpiredSignature").withArgs(deadline);        
+        });
+
+        it("should revert permit not an owner", async function(){
+        const {user0, user1, user2, ame_Token} = await loadFixture(deploy);
+            const mintTx = await ame_Token.mint(user0, 100n); //наимнтим немного, чтобы было что передавать
+
+            //исходные данные для передачи разрешений
+            const tokenAddress = await ame_Token.getAddress(); //сам токен
+            const owner = user2.address; //адрес владельца токенов
+            const spender = user1.address; //адрес транжиры токенов
+            const signer = user0; //aдрес, подписывающий транзу 
+            
+            const amount = 15; //сумма, которую разрешим потратить
+            const deadline = Math.floor(Date.now() / 1000) + 1000; //делдлайн - 1000 секунд
+            const nonce = Number((await ame_Token.nonces(owner))); //берем начальный nonce владельца и обрезаем до number (чтобы с BigInt не возиться)
+
+            const result = await signERC2612Permit( //получааем подписанное сообщение
+                tokenAddress, 
+                owner, 
+                spender,
+                amount,
+                deadline,
+                nonce,
+                signer
+            );                        
+            
+            //формируем  транзацкцию permit на выдачу разрешения от user1 
+            //потратить токены user2 с подписью от user0 (signer) (promise, пока не отравляем)
+            const tx = ame_Token.connect(user1).permit(                
+                owner, 
+                spender,
+                amount,
+                deadline,                
+                result.v,
+                result.r,
+                result.s
+            );                   
+
+            await expect(tx).revertedWithCustomError(ame_Token, "ERC2612InvalidSigner").withArgs(signer, user2);
+        });
         
     });
 })
