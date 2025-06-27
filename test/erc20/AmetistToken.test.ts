@@ -218,4 +218,20 @@ describe("AmetistToken", function() {
         });
         
     });
+
+    describe("Access control tests", function() { //блок тестов ролевой системы
+        
+        it("should set default roles", async function() {//простой тест, что при деплое и вызове конструктора устанавливаются роли
+            const {user0, user1, ame_Token } = await loadFixture(deploy); 
+            
+            const minterRole = await ame_Token.MINTER_ROLE();
+            const adminRole = await ame_Token.DEFAULT_ADMIN_ROLE();
+            
+            expect(await ame_Token.hasRole(minterRole, user0)).true;
+            expect(await ame_Token.hasRole(adminRole, user0)).true;
+            expect(await ame_Token.hasRole(minterRole, user1)).false;
+            expect(await ame_Token.hasRole(adminRole, user1)).false;
+        });
+    });
+
 })
