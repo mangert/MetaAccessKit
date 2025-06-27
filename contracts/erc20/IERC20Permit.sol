@@ -9,14 +9,14 @@ pragma solidity ^0.8.29;
 interface IERC20Permit {
     
     /**
-     * 
-     * @param owner -
-     * @param spender - 
-     * @param value  -
-     * @param deadline - 
-     * @param v -  
-     * @param r - 
-     * @param s - 
+     * @notice функция выдачи разрешения на расходование токенов
+     * @param owner - адрес владельца
+     * @param spender - адрес, на который выдается разрешение тратить токены
+     * @param value  - сумма, на которую выдается разрешение
+     * @param deadline - срок годности подписанного сообщения
+     * @param v - компонент подписи
+     * @param r - компонент подписи
+     * @param s - компонент подписи
      */
     function permit(
         address owner, 
@@ -28,8 +28,15 @@ interface IERC20Permit {
         bytes32 s
     ) external;
 
+    /**
+     * @notice функция возращает текущий nonce по транзакциям выдачи разрешений на адрес владельца
+     * @param owner - адрес владельца
+     */
     function nonces(address owner) external view returns (uint256);
     
+    /**
+     * @notice функция возращает уникальный идентификатор “домена” подписей в контракте
+     */   
     function DOMAIN_SEPARATOR() external view returns (bytes32);
     
 }

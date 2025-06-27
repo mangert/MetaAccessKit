@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/utils/Nonces.sol";
 
 abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712, Nonces{
     
-    //контстанта  для описания формы сообщения, которое пользователь должен подписать при вызове
+    //константа  для описания формы сообщения, которое пользователь должен подписать при вызове
     bytes32 private constant PERMIT_TYPEHASH = keccak256
         ("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)");
 
@@ -42,7 +42,7 @@ abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712, Nonces{
     ) external virtual {
         require(block.timestamp <= deadline, ERC2612ExpiredSignature(deadline)); //сначала проверяем дедлайн
         
-        bytes32 structHash = keccak256(
+        bytes32 structHash = keccak256( //формируем message
             abi.encode(
                 PERMIT_TYPEHASH, //стандартная константа
                 owner,
@@ -53,7 +53,7 @@ abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712, Nonces{
             )
         );
 
-        bytes32 hash = _hashTypedDataV4(structHash);
+        bytes32 hash = _hashTypedDataV4(structHash); //формируем digest (полная хэш-структура по EIP-712):
 
         address signer = ECDSA.recover(hash, v, r, s); //восстанавливаем подписанта
 
@@ -72,7 +72,10 @@ abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712, Nonces{
         return super.nonces(owner);
     }
     
+    /**
+     * @notice Реализация стандартной функции для интерфейса IERC20Permit
+     */
     function DOMAIN_SEPARATOR() external view returns (bytes32) {
-        return _domainSeparatorV4();
+        return _domainSeparatorV4(); //обращаемся к реализации oppenzeppelin
     }        
 }
