@@ -232,6 +232,46 @@ describe("AmetistToken", function() {
             expect(await ame_Token.hasRole(minterRole, user1)).false;
             expect(await ame_Token.hasRole(adminRole, user1)).false;
         });
+
+        it("should grant roles", async function() {//проверяем выдачу роли
+            const {user0, user1, ame_Token } = await loadFixture(deploy); 
+            
+            const minterRole = await ame_Token.MINTER_ROLE();            
+
+            const grantTx = await ame_Token.grantRole(minterRole, user1); //выдаем роль минтера 
+            
+            //проверяем событие, и что роль реально есть
+            expect(grantTx).to.emit(ame_Token, "RoleGranted").withArgs(minterRole, user1, user0);
+            expect(await ame_Token.hasRole(minterRole, user1)).true;
+
+            const mintTx = await ame_Token.connect(user1).mint(user1, 100n); //пробуем сминтить
+            expect(mintTx).changeTokenBalance(ame_Token, user1, 100n);                      
+        });
+
+        it("should revoke roles", async function() {//проверяем отзыв роли
+            const {user0, user1, ame_Token } = await loadFixture(deploy); 
+            
+            const minterRole = await ame_Token.MINTER_ROLE();        
+
+            const mintTx0 = ame_Token.connect(user1).mint(user1, 100n); //пробуем сминтить при отсутствии роли
+            await expect(mintTx0).revertedWithCustomError(ame_Token, "UnauthorizedAccount").
+                withArgs(user1, minterRole);
+
+            
+            const grantTx = await ame_Token.grantRole(minterRole, user1); //выдаем роль минтера
+            const mintTx1 = await ame_Token.connect(user1).mint(user1, 100n); //пробуем сминтить при выданной роли
+            expect(mintTx1).changeTokenBalance(ame_Token, user1, 100n);          
+            
+            const revokeTx = await ame_Token.revokeRole(minterRole, user1); //отзываем роль минтера
+            
+            //проверяем событие, и что роль реально отозвана
+            expect(revokeTx).to.emit(ame_Token, "RoleRevoked").withArgs(minterRole, user1, user0);
+            expect(await ame_Token.hasRole(minterRole, user1)).false;
+            
+            const mintTx2 = ame_Token.connect(user1).mint(user1, 100n); //пробуем сминтить при отозванной роли
+            await expect(mintTx2).revertedWithCustomError(ame_Token, "UnauthorizedAccount").
+                withArgs(user1, minterRole);
+        });
     });
 
 })
