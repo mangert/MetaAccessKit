@@ -2,8 +2,8 @@
 pragma solidity ^0.8.29;
 
 /**
- * @title 
- * @notice 
+ * @title IAccessControl
+ * @notice интерфейс для ролевой системы в контракте ERC20
  */
 
 interface IAccessControl {
