@@ -10,56 +10,24 @@ import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { Errors } from "@openzeppelin/contracts/utils/Errors.sol";
 
 /**
- * @dev A forwarder compatible with ERC-2771 contracts. See {ERC2771Context}.
- *
- * This forwarder operates on forward requests that include:
- *
- * * `from`: An address to operate on behalf of. It is required to be equal to the request signer.
- * * `to`: The address that should be called.
- * * `value`: The amount of native token to attach with the requested call.
- * * `gas`: The amount of gas limit that will be forwarded with the requested call.
- * * `nonce`: A unique transaction ordering identifier to avoid replayability and request invalidation.
- * * `deadline`: A timestamp after which the request is not executable anymore.
- * * `data`: Encoded `msg.data` to send with the requested call.
- *
- * Relayers are able to submit batches if they are processing a high volume of requests. With high
- * throughput, relayers may run into limitations of the chain such as limits on the number of
- * transactions in the mempool. In these cases the recommendation is to distribute the load among
- * multiple accounts.
- *
- * NOTE: Batching requests includes an optional refund for unused `msg.value` that is achieved by
- * performing a call with empty calldata. While this is within the bounds of ERC-2771 compliance,
- * if the refund receiver happens to consider the forwarder a trusted forwarder, it MUST properly
- * handle `msg.data.length == 0`. `ERC2771Context` in OpenZeppelin Contracts versions prior to 4.9.3
- * do not handle this properly.
- *
- * ==== Security Considerations
- *
- * If a relayer submits a forward request, it should be willing to pay up to 100% of the gas amount
- * specified in the request. This contract does not implement any kind of retribution for this gas,
- * and it is assumed that there is an out of band incentive for relayers to pay for execution on
- * behalf of signers. Often, the relayer is operated by a project that will consider it a user
- * acquisition cost.
- *
- * By offering to pay for gas, relayers are at risk of having that gas used by an attacker toward
- * some other purpose that is not aligned with the expected out of band incentives. If you operate a
- * relayer, consider whitelisting target contracts and function selectors. When relaying ERC-721 or
- * ERC-1155 transfers specifically, consider rejecting the use of the `data` field, since it can be
- * used to execute arbitrary code.
+ * @notice отдельный "форвардер"
+ * из библиотетки openzeppelin, включен для использования в ETHAccount2771
  */
 contract ERC2771Forwarder is EIP712, Nonces {
-    using ECDSA for bytes32;
+    using ECDSA for bytes32; //псевдоним типа для удобства
 
+    //структура - формат сообщения
     struct ForwardRequestData {
-        address from;
-        address to;
-        uint256 value;
+        address from; //"настоящий" пользователь, который подписал вызов
+        address to;  //адрес "целевого" контракта
+        uint256 value; //передаваемые в транзакции деньги
         uint256 gas;
         uint48 deadline;
-        bytes data;
-        bytes signature;
+        bytes data; //селектор вызываемой функции с аргументами
+        bytes signature; //подпись
     }
 
+    //константа  для описания формы сообщения, которое пользователь должен подписать при вызове
     bytes32 internal constant _FORWARD_REQUEST_TYPEHASH =
         keccak256(
             "ForwardRequest(address from,address to,uint256 value,uint256 gas,uint256 nonce,uint48 deadline,bytes data)"

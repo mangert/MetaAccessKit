@@ -46,9 +46,9 @@ abstract contract ERC2771Context is Context {
     }
 
     /**
-     * @dev Override for `msg.data`. Defaults to the original `msg.data` whenever
-     * a call is not performed by the trusted forwarder or the calldata length is less than
-     * 20 bytes (an address length).
+     * @notice функция вытаскивает соодержание сообщения (перегрузка из Context)
+     * если длина сообщения больше длины адреса и сообщение пришло от зарегистрированного форвардера,
+     * отрезается "хвост" - 20 байт адреса отправителя транзакции, в противном случае возвращается сообщение целиком
      */
     function _msgData() internal view virtual override returns (bytes calldata) {
         uint256 calldataLength = msg.data.length;
@@ -61,7 +61,7 @@ abstract contract ERC2771Context is Context {
     }
 
     /**
-     * @dev ERC-2771 specifies the context as being a single address (20 bytes).
+     * @notice функция возвращает длину адреса отправителя (перегрузка из Context)
      */
     function _contextSuffixLength() internal view virtual override returns (uint256) {
         return 20;
