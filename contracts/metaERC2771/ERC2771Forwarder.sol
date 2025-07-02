@@ -247,16 +247,6 @@ contract ERC2771Forwarder is EIP712, Nonces {
     }
 
     /**
-     * @dev Returns whether the target trusts this forwarder.
-     *
-     * This function performs a static call to the target contract calling the
-     * {ERC2771Context-isTrustedForwarder} function.
-     *
-     * NOTE: Consider the execution of this forwarder is permissionless. Without this check, anyone may transfer assets
-     * that are owned by, or are approved to this forwarder.
-     */
-
-    /**
      * @notice служебная функция проверяет, является ли наш форвардер доверенным на целевом контракте
      * @param target - адрес целевого контаркта
      */
