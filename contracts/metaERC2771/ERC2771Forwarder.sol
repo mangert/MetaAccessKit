@@ -16,7 +16,7 @@ import { Errors } from "@openzeppelin/contracts/utils/Errors.sol";
 contract ERC2771Forwarder is EIP712, Nonces {
     using ECDSA for bytes32; //псевдоним типа для удобства
 
-    //структура - формат сообщения
+    //структура для сообщения-запроса на выполнение
     struct ForwardRequestData {
         address from; //"настоящий" пользователь, который подписал вызов
         address to;  //адрес "целевого" контракта
@@ -34,47 +34,46 @@ contract ERC2771Forwarder is EIP712, Nonces {
         );
 
     /**
-     * @dev Emitted when a `ForwardRequest` is executed.
-     *
-     * NOTE: An unsuccessful forward request could be due to an invalid signature, an expired deadline,
-     * or simply a revert in the requested call. The contract guarantees that the relayer is not able to force
-     * the requested call to run out of gas.
+     * @notice порождается в случае исполнения запроса на выполнение функции
+     * @param signer - пользователь, подписавший сообщение
+     * @param nonce - текущее значение счетчика сообщений пользователя
+     * @param  success - результат вызова
      */
     event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success);
 
     /**
-     * @dev The request `from` doesn't match with the recovered `signer`.
+     * @notice ошибка индицирует неверного подписанта
+     * @param signer - подисант, выведенный из расшифровки запроса
+     * @param from - отправитель запроса
      */
     error ERC2771ForwarderInvalidSigner(address signer, address from);
 
     /**
-     * @dev The `requestedValue` doesn't match with the available `msgValue`.
+     * @notice ошибка индицирует некорректную сумму в запросе
+     * @param requestedValue - сумма транзакции, записанная в запросе
+     * @param msgValue - сумма, полученная в транзакции от релеера
      */
     error ERC2771ForwarderMismatchedValue(uint256 requestedValue, uint256 msgValue);
 
     /**
-     * @dev The request `deadline` has expired.
+     * @notice ошибка индицирует истекший срок действия подписаннного сообщения
+     * @param deadline - срок действия сообщения     
      */
     error ERC2771ForwarderExpiredRequest(uint48 deadline);
 
     /**
-     * @dev The request target doesn't trust the `forwarder`.
+     * @notice ошибка индицирует, что целевой контракт не поддерживает этот контракт как форвардер
+     * @param target - адрес целевого контракта
+     * @param forwarder - поддерживаемый форвардер
      */
     error ERC2771UntrustfulTarget(address target, address forwarder);
 
-    /**
-     * @dev See {EIP712-constructor}.
-     */
-    constructor(string memory name) EIP712(name, "1") {}
+    
+    constructor(string memory name) EIP712(name, "1") {}    
 
     /**
-     * @dev Returns `true` if a request is valid for a provided `signature` at the current block timestamp.
-     *
-     * A transaction is considered valid when the target trusts this forwarder, the request hasn't expired
-     * (deadline is not met), and the signer matches the `from` parameter of the signed request.
-     *
-     * NOTE: A request may return false here but it won't cause {executeBatch} to revert if a refund
-     * receiver is provided.
+     * @notice функция возращает результат проверки форвардера целевого контаркта, подписанта и дедлайна 
+     * @param request - сообщение-запрос на вызов функции
      */
     function verify(ForwardRequestData calldata request) public view virtual returns (bool) {
         (bool isTrustedForwarder, bool active, bool signerMatch, ) = _validate(request);
@@ -82,60 +81,35 @@ contract ERC2771Forwarder is EIP712, Nonces {
     }
 
     /**
-     * @dev Executes a `request` on behalf of `signature`'s signer using the ERC-2771 protocol. The gas
-     * provided to the requested call may not be exactly the amount requested, but the call will not run
-     * out of gas. Will revert if the request is invalid or the call reverts, in this case the nonce is not consumed.
-     *
-     * Requirements:
-     *
-     * - The request value should be equal to the provided `msg.value`.
-     * - The request should be valid according to {verify}.
+     * @notice функция выполняет запрос на целевом контракте
+     * @param request - сообщение-запрос
      */
     function execute(ForwardRequestData calldata request) public payable virtual {
-        // We make sure that msg.value and request.value match exactly.
-        // If the request is invalid or the call reverts, this whole function
-        // will revert, ensuring value isn't stuck.
-        if (msg.value != request.value) {
+        
+        if (msg.value != request.value) { //проверяем сумму
             revert ERC2771ForwarderMismatchedValue(request.value, msg.value);
         }
 
-        if (!_execute(request, true)) {
-            revert Errors.FailedCall();
+        if (!_execute(request, true)) { //запускаем внутреннюю функцию выполнения (остальные проверки там)
+            revert Errors.FailedCall(); //если неуспешно - кидаем ошибку вызова
         }
     }
-
+    
     /**
-     * @dev Batch version of {execute} with optional refunding and atomic execution.
-     *
-     * In case a batch contains at least one invalid request (see {verify}), the
-     * request will be skipped and the `refundReceiver` parameter will receive back the
-     * unused requested value at the end of the execution. This is done to prevent reverting
-     * the entire batch when a request is invalid or has already been submitted.
-     *
-     * If the `refundReceiver` is the `address(0)`, this function will revert when at least
-     * one of the requests was not valid instead of skipping it. This could be useful if
-     * a batch is required to get executed atomically (at least at the top-level). For example,
-     * refunding (and thus atomicity) can be opt-out if the relayer is using a service that avoids
-     * including reverted transactions.
-     *
-     * Requirements:
-     *
-     * - The sum of the requests' values should be equal to the provided `msg.value`.
-     * - All of the requests should be valid (see {verify}) when `refundReceiver` is the zero address.
-     *
-     * NOTE: Setting a zero `refundReceiver` guarantees an all-or-nothing requests execution only for
-     * the first-level forwarded calls. In case a forwarded request calls to a contract with another
-     * subcall, the second-level call may revert without the top-level call reverting.
+     * @notice функция выполняет "пачку" запросов
+     * @param requests - массив запросов
+     * @param refundReceiver - адрес, куда вернуть средства, если один из запросов из пачки отвалится
      */
     function executeBatch(
         ForwardRequestData[] calldata requests,
         address payable refundReceiver
     ) public payable virtual {
-        bool atomic = refundReceiver == address(0);
+        bool atomic = refundReceiver == address(0); //если задан нулевой адрес возврата, то будем запускать execute с true
 
         uint256 requestsValue;
         uint256 refundValue;
 
+        //цикл выполнения
         for (uint256 i; i < requests.length; ++i) {
             requestsValue += requests[i].value;
             bool success = _execute(requests[i], atomic);
@@ -144,18 +118,14 @@ contract ERC2771Forwarder is EIP712, Nonces {
             }
         }
 
-        // The batch should revert if there's a mismatched msg.value provided
-        // to avoid request value tampering
-        if (requestsValue != msg.value) {
+        
+        if (requestsValue != msg.value) { //проверяем достаточность суммы
             revert ERC2771ForwarderMismatchedValue(requestsValue, msg.value);
         }
 
-        // Some requests with value were invalid (possibly due to frontrunning).
-        // To avoid leaving ETH in the contract this value is refunded.
+        //если какие-то запросы отвалились, вернем сумму, предназначенную для их выполнения
         if (refundValue != 0) {
-            // We know refundReceiver != address(0) && requestsValue == msg.value
-            // meaning we can ensure refundValue is not taken from the original contract's balance
-            // and refundReceiver is a known account.
+        
             Address.sendValue(refundReceiver, refundValue);
         }
     }
@@ -163,6 +133,16 @@ contract ERC2771Forwarder is EIP712, Nonces {
     /**
      * @dev Validates if the provided request can be executed at current block timestamp with
      * the given `request.signature` on behalf of `request.signer`.
+     */
+
+    /**
+     * @notice служебная функция проверяет параметры запроса - указан ли в целевом контракте этот контракт как доверенный форвардер,
+     * не истек ли дедлайн, действительна ли подпись и возвращает соответстующие значения и подписанта
+     * @param request - запрос
+     * @return isTrustedForwarder - форвардер зарегистрирован в целевом контракте
+     * @return active - дедлайн не истек
+     * @return signerMatch - подпись совпала 
+     * @return signer - подписант
      */
     function _validate(
         ForwardRequestData calldata request
@@ -178,10 +158,8 @@ contract ERC2771Forwarder is EIP712, Nonces {
     }
 
     /**
-     * @dev Returns a tuple with the recovered the signer of an EIP712 forward request message hash
-     * and a boolean indicating if the signature is valid.
-     *
-     * NOTE: The signature is considered valid if {ECDSA-tryRecover} indicates no recover error for it.
+     * @notice служебная функция - возращает из сообщения подписанта и проверяет валидность подписи
+     * @param request - сообщение-запрос на выполнение функций     
      */
     function _recoverForwardRequestSigner(
         ForwardRequestData calldata request
@@ -219,32 +197,36 @@ contract ERC2771Forwarder is EIP712, Nonces {
      * IMPORTANT: Using this function doesn't check that all the `msg.value` was sent, potentially
      * leaving value stuck in the contract.
      */
+    
+    /**
+     * @notice внутренняя функция, выполняющая запрос
+     * @param request - сообщение-запрос
+     * @param requireValidRequest - признак указывает, как организовать проверки запроса - ревертить при ошибках или просто не выполнять запрос
+     */
     function _execute(
         ForwardRequestData calldata request,
         bool requireValidRequest
     ) internal virtual returns (bool success) {
         (bool isTrustedForwarder, bool active, bool signerMatch, address signer) = _validate(request);
 
-        // Need to explicitly specify if a revert is required since non-reverting is default for
-        // batches and reversion is opt-in since it could be useful in some scenarios
-        if (requireValidRequest) {
+        
+        if (requireValidRequest) { //делаем проверки, если в параметрах передано true, и, если не прошло, сразу ревертим
             if (!isTrustedForwarder) {
-                revert ERC2771UntrustfulTarget(request.to, address(this));
+                revert ERC2771UntrustfulTarget(request.to, address(this)); //проверяем форвардера в целевом контракте
             }
 
             if (!active) {
-                revert ERC2771ForwarderExpiredRequest(request.deadline);
+                revert ERC2771ForwarderExpiredRequest(request.deadline); //проверяем дедлайн 
             }
 
             if (!signerMatch) {
-                revert ERC2771ForwarderInvalidSigner(signer, request.from);
+                revert ERC2771ForwarderInvalidSigner(signer, request.from); //проверяем подписанта
             }
         }
-
-        // Ignore an invalid request because requireValidRequest = false
-        if (isTrustedForwarder && signerMatch && active) {
-            // Nonce should be used before the call to prevent reusing by reentrancy
-            uint256 currentNonce = _useNonce(signer);
+        
+        if (isTrustedForwarder && signerMatch && active) { //если форвардер поддерживается, подпись валидна и дедлайн не прошел
+            // будем выполнять запрос
+            uint256 currentNonce = _useNonce(signer); //берем nonce
 
             uint256 reqGas = request.gas;
             address to = request.to;
@@ -252,15 +234,15 @@ contract ERC2771Forwarder is EIP712, Nonces {
             bytes memory data = abi.encodePacked(request.data, request.from);
 
             uint256 gasLeft;
-
+            //низкоуровневый вызов функции целевого контракта
             assembly ("memory-safe") {
                 success := call(reqGas, to, value, add(data, 0x20), mload(data), 0, 0)
                 gasLeft := gas()
             }
 
-            _checkForwardedGas(gasLeft, request);
+            _checkForwardedGas(gasLeft, request); //проверяем оставшийся газ
 
-            emit ExecutedForwardRequest(signer, currentNonce, success);
+            emit ExecutedForwardRequest(signer, currentNonce, success); //эмитируем событие, что запрос выполнен успешно или нет
         }
     }
 
@@ -273,18 +255,18 @@ contract ERC2771Forwarder is EIP712, Nonces {
      * NOTE: Consider the execution of this forwarder is permissionless. Without this check, anyone may transfer assets
      * that are owned by, or are approved to this forwarder.
      */
+
+    /**
+     * @notice служебная функция проверяет, является ли наш форвардер доверенным на целевом контракте
+     * @param target - адрес целевого контаркта
+     */
     function _isTrustedByTarget(address target) internal view virtual returns (bool) {
         bytes memory encodedParams = abi.encodeCall(ERC2771Context.isTrustedForwarder, (address(this)));
 
         bool success;
         uint256 returnSize;
         uint256 returnValue;
-        assembly ("memory-safe") {
-            // Perform the staticcall and save the result in the scratch space.
-            // | Location  | Content  | Content (Hex)                                                      |
-            // |-----------|----------|--------------------------------------------------------------------|
-            // |           |          |                                                           result ↓ |
-            // | 0x00:0x1F | selector | 0x0000000000000000000000000000000000000000000000000000000000000001 |
+        assembly ("memory-safe") { //делаем низкоуровневый вызов функции isTrustedForwarder на целевом контракте
             success := staticcall(gas(), target, add(encodedParams, 0x20), mload(encodedParams), 0, 0x20)
             returnSize := returndatasize()
             returnValue := mload(0)
@@ -294,45 +276,18 @@ contract ERC2771Forwarder is EIP712, Nonces {
     }
 
     /**
-     * @dev Checks if the requested gas was correctly forwarded to the callee.
-     *
-     * As a consequence of https://eips.ethereum.org/EIPS/eip-150[EIP-150]:
-     * - At most `gasleft() - floor(gasleft() / 64)` is forwarded to the callee.
-     * - At least `floor(gasleft() / 64)` is kept in the caller.
-     *
-     * It reverts consuming all the available gas if the forwarded gas is not the requested gas.
-     *
-     * IMPORTANT: The `gasLeft` parameter should be measured exactly at the end of the forwarded call.
-     * Any gas consumed in between will make room for bypassing this check.
+     * @notice служебная функция проверяет хватило ли газа для выполнения запроса
+     * защита от злонамеренных действий или ошибок релеера при передаче запроса
+     * то есть функция нужна чтобы проверить, что relayer передал достаточно газа и вызов не “задушился” искусственно.
+     * @param gasLeft - остаток газа после вызова
+     * @param request - сам запрос
      */
     function _checkForwardedGas(uint256 gasLeft, ForwardRequestData calldata request) private pure {
-        // To avoid insufficient gas griefing attacks, as referenced in https://ronan.eth.limo/blog/ethereum-gas-dangers/
-        //
-        // A malicious relayer can attempt to shrink the gas forwarded so that the underlying call reverts out-of-gas
-        // but the forwarding itself still succeeds. In order to make sure that the subcall received sufficient gas,
-        // we will inspect gasleft() after the forwarding.
-        //
-        // Let X be the gas available before the subcall, such that the subcall gets at most X * 63 / 64.
-        // We can't know X after CALL dynamic costs, but we want it to be such that X * 63 / 64 >= req.gas.
-        // Let Y be the gas used in the subcall. gasleft() measured immediately after the subcall will be gasleft() = X - Y.
-        // If the subcall ran out of gas, then Y = X * 63 / 64 and gasleft() = X - Y = X / 64.
-        // Under this assumption req.gas / 63 > gasleft() is true if and only if
-        // req.gas / 63 > X / 64, or equivalently req.gas > X * 63 / 64.
-        // This means that if the subcall runs out of gas we are able to detect that insufficient gas was passed.
-        //
-        // We will now also see that req.gas / 63 > gasleft() implies that req.gas >= X * 63 / 64.
-        // The contract guarantees Y <= req.gas, thus gasleft() = X - Y >= X - req.gas.
-        // -    req.gas / 63 > gasleft()
-        // -    req.gas / 63 >= X - req.gas
-        // -    req.gas >= X * 63 / 64
-        // In other words if req.gas < X * 63 / 64 then req.gas / 63 <= gasleft(), thus if the relayer behaves honestly
-        // the forwarding does not revert.
-        if (gasLeft < request.gas / 63) {
-            // We explicitly trigger invalid opcode to consume all gas and bubble-up the effects, since
-            // neither revert or assert consume all gas since Solidity 0.8.20
-            // https://docs.soliditylang.org/en/v0.8.20/control-structures.html#panic-via-assert-and-error-via-require
-            assembly ("memory-safe") {
-                invalid()
+        
+        if (gasLeft < request.gas / 63) { //проверяем, что оставшийся после вызова газ меньше, чем EVM оставляет себе по правилу 63/64
+            
+            assembly ("memory-safe") { //и если меньше, ревертим транзакцию
+                invalid() //гарантированно откатывает транзакцию и сжигает весь газ
             }
         }
     }
