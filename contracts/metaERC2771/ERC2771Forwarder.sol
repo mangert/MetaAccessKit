@@ -183,22 +183,6 @@ contract ERC2771Forwarder is EIP712, Nonces {
     }
 
     /**
-     * @dev Validates and executes a signed request returning the request call `success` value.
-     *
-     * Internal function without msg.value validation.
-     *
-     * Requirements:
-     *
-     * - The caller must have provided enough gas to forward with the call.
-     * - The request must be valid (see {verify}) if the `requireValidRequest` is true.
-     *
-     * Emits an {ExecutedForwardRequest} event.
-     *
-     * IMPORTANT: Using this function doesn't check that all the `msg.value` was sent, potentially
-     * leaving value stuck in the contract.
-     */
-    
-    /**
      * @notice внутренняя функция, выполняющая запрос
      * @param request - сообщение-запрос
      * @param requireValidRequest - признак указывает, как организовать проверки запроса - ревертить при ошибках или просто не выполнять запрос

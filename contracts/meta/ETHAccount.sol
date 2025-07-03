@@ -43,6 +43,6 @@ contract ETHAccount is IETHAccount {
         (bool success, ) = recipient.call{value: amount}("");
         require(success, WitdrawFailed(recipient, amount));
 
-    emit Withdrawed(owner, recipient, amount);
+    emit Withdrawed(recipient, amount);
     }
 }
