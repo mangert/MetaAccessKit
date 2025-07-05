@@ -131,11 +131,6 @@ contract ERC2771Forwarder is EIP712, Nonces {
     }
 
     /**
-     * @dev Validates if the provided request can be executed at current block timestamp with
-     * the given `request.signature` on behalf of `request.signer`.
-     */
-
-    /**
      * @notice служебная функция проверяет параметры запроса - указан ли в целевом контракте этот контракт как доверенный форвардер,
      * не истек ли дедлайн, действительна ли подпись и возвращает соответстующие значения и подписанта
      * @param request - запрос
