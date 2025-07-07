@@ -3,6 +3,7 @@ pragma solidity ^0.8.29;
 
 import { IETHAccount } from "../meta/IETHAccount.sol";
 import { ERC2771Context } from "./ERC2771Context.sol";
+import "../libs/IDGenerator.sol";
 
 /**
  * @title ETHAccount2771
@@ -10,7 +11,7 @@ import { ERC2771Context } from "./ERC2771Context.sol";
  * стандарта ERC2771
  */
 
-contract ETHAccount2771 is IETHAccount, ERC2771Context {
+contract ETHAccountV1 is IETHAccount, ERC2771Context {
     
     bytes4 public immutable accountID; // идентификатор 
     address private owner; //владелец
@@ -21,8 +22,9 @@ contract ETHAccount2771 is IETHAccount, ERC2771Context {
     }
 
     constructor(uint8 _id, address trustedForwarder_) ERC2771Context (trustedForwarder_) {
-        accountID = bytes4(keccak256(abi.encode(_id, msg.sender))); //формируем идентификатор из произвольного числа и адреса владельца
+              
         owner = msg.sender; //назначаем владельца
+        accountID = IDGenerator.computeId(owner, _id); //формируем идентификатор исходя из переданного индекса и адреса владельца        
     }
 
     //реализация функций интерфейса IETHAccount

@@ -2,6 +2,7 @@
 pragma solidity ^0.8.29;
 
 import { IETHAccount } from "./IETHAccount.sol";
+import "../libs/IDGenerator.sol";
 
 /**
  * @title ETHAccount
@@ -18,9 +19,9 @@ contract ETHAccount is IETHAccount {
         _;
     }
 
-    constructor(uint8 _id) {
-        accountID = bytes4(keccak256(abi.encode(_id, msg.sender)));
+    constructor(uint8 _id) {        
         owner = msg.sender;
+        accountID = IDGenerator.computeId(owner, _id);
     }
 
     function deposit() external payable {

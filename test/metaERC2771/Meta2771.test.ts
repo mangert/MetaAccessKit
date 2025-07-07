@@ -13,7 +13,7 @@ describe("meta ERC2771 tests", function() {
         
 
         //деплоим контракт счета
-        const accountETH_Factory = await ethers.getContractFactory("ETHAccount2771");
+        const accountETH_Factory = await ethers.getContractFactory("ETHAccountV1");
         const accountETH = await accountETH_Factory.deploy("1", forwarder.getAddress());
         await accountETH.waitForDeployment();
 
