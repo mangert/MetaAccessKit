@@ -30,7 +30,7 @@ contract ETHAccountV2 is IETHAccount, ERC2771Context {
         require(!_initialized, ReInitializationdAccout()); 
         _initialized = true;
         
-        accountID = IDGenerator.computeId(owner, _id); //формируем идентификатор исходя из переданного индекса и адреса владельца
+        accountID = IDGenerator.computeId(_owner, _id); //формируем идентификатор исходя из переданного индекса и адреса владельца
         owner = _owner; //назначаем владельца;
     }    
    
