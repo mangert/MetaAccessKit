@@ -7,7 +7,7 @@ import "../libs/IDGenerator.sol";
 
 /**
  * @title ETHAccount
- * @notice версия контракта для включения использования через CloneFactory * 
+ * @notice версия контракта для использования через CloneFactory  
  */
 
 contract ETHAccountV2 is IETHAccount, ERC2771Context {
