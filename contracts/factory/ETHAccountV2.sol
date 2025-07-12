@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.29;
 
-import { IETHAccount } from "../meta/IETHAccount.sol";
-import { ERC2771Context } from "../metaERC2771/ERC2771Context.sol";
+import { IETHAccount } from "../commonInterfaces/IETHAccount.sol";
+import { ERC2771Context } from "../meta/ERC2771Context.sol";
 import "../libs/IDGenerator.sol";
 
 /**

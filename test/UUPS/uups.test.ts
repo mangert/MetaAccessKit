@@ -1,6 +1,6 @@
 import { loadFixture, ethers, expect  } from "../setup";
 import { IETHAccount, AccountBoxV1, AccountBoxV2 } from "../../typechain-types";
-import { signMetaTx } from "../metaERC2771/helpers"; 
+import { signMetaTx } from "../meta/helpers"; 
 import { upgrades } from "hardhat";
 
 describe("UUPS-upgradable tests", function() {
@@ -123,7 +123,7 @@ describe("UUPS-upgradable tests", function() {
                 "function initialize(address trustedForwarder, address initialOwner)"
             ]); //сигнатура
             const data = iface.encodeFunctionData("initialize", [
-                await forwarder.getAddress(),  // адрес твоего форвардера
+                await forwarder.getAddress(),  // адрес форвардера
                 user0.address      // правильный владелец
             ]); //запаковываем в нужный формат
 
@@ -133,14 +133,17 @@ describe("UUPS-upgradable tests", function() {
                 ).to.be.revertedWithCustomError(proxyBox, "OwnableUnauthorizedAccount");
                      
         });
-        /*
-        it("should allow meta-withdraw via forwarder", async function () { //smoke-тест для проверки работоспособности клонов с метатранзакциями
+        //smoke-тест для проверки работоспособности клонов с метатранзакциями после обновления фабрики
+        it("should allow meta-withdraw via forwarder", async function () { 
             
-            const { user0, user1, forwarder, accountBox } = await loadFixture(deploy);
+            const { user0, user1, forwarder, proxyBox } = await loadFixture(deploy);
+
+            const BoxV2 = await ethers.getContractFactory("AccountBoxV2");
+            const proxyBoxV2 = await upgrades.upgradeProxy(proxyBox, BoxV2);
 
             // создаём аккаунт
-            await accountBox.connect(user0).createClone();
-            const accAddr = await accountBox.getAccountByIndex(user0, 0);
+            await proxyBoxV2.connect(user0).createClone();
+            const accAddr = await proxyBoxV2.getAccountByIndex(user0, 0);
             const account = await ethers.getContractAt("ETHAccountV2", accAddr);
 
             // депонируем немного средств
@@ -166,7 +169,7 @@ describe("UUPS-upgradable tests", function() {
 
             const tx = await forwarder.connect(user1).execute(fullRequest); //запускаем транзу от user1
             await expect(tx).to.changeEtherBalances([accAddr, user1.address], [-amount, amount]);
-            });*/
+            });
     });
 
 });

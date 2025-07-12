@@ -1,6 +1,6 @@
 import { loadFixture, ethers, expect  } from "../setup";
 import { IETHAccount, AccountBox } from "../../typechain-types";
-import { signMetaTx } from "../metaERC2771/helpers"; 
+import { signMetaTx } from "../meta/helpers"; 
 
 describe("Clone factory tests", function() {
     async function deploy() {        
