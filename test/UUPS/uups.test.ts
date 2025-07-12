@@ -14,7 +14,6 @@ describe("UUPS-upgradable tests", function() {
         await forwarder.waitForDeployment();    
         
         //деплоим контракт фабрики через прокси
-
         const forwarderAddr = await forwarder.getAddress();        
         const Box = await ethers.getContractFactory("AccountBoxV1");
         const proxyBox = await upgrades.deployProxy(Box, [forwarderAddr, user0.address], {

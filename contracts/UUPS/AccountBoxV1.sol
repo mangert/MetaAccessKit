@@ -32,8 +32,8 @@ contract AccountBoxV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable{
     
     /**
      * @notice - функция инициализации - вместо конструктора
-     * @param trustedForwarder -
-     * @param initialOwner -
+     * @param trustedForwarder - адрес форвардера
+     * @param initialOwner - адрес владельца
      */
     function initialize(address trustedForwarder, address initialOwner) public initializer {
         implementation = address(new ETHAccountV2(trustedForwarder));

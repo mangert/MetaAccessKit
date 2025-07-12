@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import hre, { ethers, run } from "hardhat";
 //скрипт для деплоя и верификации
-async function main() {
+async function main() {   
     
     const forwarderContractName = "ERC2771Forwarder";
     const contractName = "ETHAccountV1";       
@@ -10,7 +10,7 @@ async function main() {
 
     //деплоим форвардер-контракт        
     console.log("Forwarder DEPLOYING...");
-    
+        
     const forwarder_Factory = await ethers.getContractFactory(forwarderContractName);
     const forwarder = await forwarder_Factory.deploy(forwarderContractName);
     await forwarder.waitForDeployment();        
@@ -52,7 +52,11 @@ async function main() {
         logPath,
         `[${new Date().toISOString()}] ${contractName} deployed at ${accountAddress} by ${deployer.address}\n`
     );    
-   
+    //запомним адрес форвардера - в других контрактах пригодится
+    const addressesPath = path.join(__dirname, "logs", "addresses.json");
+    fs.writeFileSync(addressesPath, JSON.stringify({ forwarder: forwarderAddress }, null, 2));   
+
+    
     //верификация    
     console.log("VERIFY...");    
 
