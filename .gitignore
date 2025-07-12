@@ -20,3 +20,5 @@ ignition/deployments/chain-31337
 data.txt
 scripts/logs/deploy-log.txt
 scripts/logs/addresses.json
+scripts/verifyFactory.ts
+scripts/verifyUUPSV2.ts

@@ -124,10 +124,10 @@ async function main() {
         }
     
     //новый адрес реализации
-    const factoryAddressV2 = await upgrades.erc1967.getImplementationAddress(await proxyBox.getAddress());           
+    const factoryAddressV2 = await upgrades.erc1967.getImplementationAddress(await proxyBoxV2.getAddress());           
     console.log("Factory V2 deployed at:", factoryAddressV2);
     //смотрим, куда фабрика задеплоила шаблон аккаунта
-    const implAddressV2 = await proxyBox.implementation(); 
+    const implAddressV2 = await proxyBoxV2.implementation(); 
     console.log("Implementation sample deployed at:", implAddressV2);    
 
     // Логируем в файл            

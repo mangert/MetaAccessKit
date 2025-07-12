@@ -61,7 +61,7 @@ async function main() {
     try {
        await run("verify:verify", {
         address: implAddress,
-        constructorArguments: [forwarderAddress], // 
+        constructorArguments: [],  
         });
        console.log("AccountBox Verification successful!");
      } catch (error: any) {
