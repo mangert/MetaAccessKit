@@ -13,73 +13,75 @@
 
 ## 📦 Структура проекта
 
-<details>
-<summary><strong>contracts/</strong> — исходные контракты
-
-├── commonInterfaces
-│ └── IETHAccount.sol # Интерфейс контракта-счета
+contracts/
+├── commonInterfaces/
+│   └── IETHAccount.sol              # Интерфейс аккаунта-счета
 │
-├── erc20 # ERC20 токен с Permit и контролем доступа
-│ ├── AmetistToken.sol # Основной токен (0x9758...)
-│ ├── AccessControl.sol # Контроль ролей
-│ ├── ERC20Permit.sol # Permit (EIP-2612)
-│ ├── IAccessControl.sol
-│ └── IERC20Permit.sol
+├── erc20/                           # ERC20 токен с Permit
+│   ├── AccessControl.sol            # Контроль доступа
+│   ├── AmetistToken.sol             # Токен (0x9758…57C9)
+│   ├── ERC20Permit.sol              # Permit-расширение
+│   ├── IAccessControl.sol
+│   └── IERC20Permit.sol
 │
-├── factory # Простая фабрика клонов
-│ ├── AccountBox.sol # Фабрика (0xb7A2...)
-│ └── ETHAccountV2.sol # Шаблон счёта (0x9030...)
+├── factory/                         # Фабрика клонов
+│   ├── AccountBox.sol               # Простая фабрика (0xb7A2…AF04)
+│   └── ETHAccountV2.sol             # Шаблон аккаунта (0x9030…03A)
 │
-├── libs
-│ └── IDGenerator.sol # Хеширование ID аккаунта
+├── libs/
+│   └── IDGenerator.sol              # Генератор ID (используется в Account)
 │
-├── meta # Meta-транзакции (ERC2771)
-│ ├── ERC2771Context.sol
-│ ├── ERC2771Forwarder.sol # Форвардер (0xd8A7...)
-│ └── ETHAccountV1.sol # Счет с поддержкой мета-транзакций (0x36Ff...)
+├── meta/                            # Метатранзакции
+│   ├── ERC2771Context.sol
+│   ├── ERC2771Forwarder.sol         # Форвардер (0xd8A7…72E)
+│   └── ETHAccountV1.sol             # Аккаунт с мета-транзакциями (0x36Ff…27b3)
 │
-├── test-helpers
-│ └── ERC20Proxy.sol # Хелпер для Permit-тестов
+├── test-helpers/
+│   └── ERC20Proxy.sol               # Хелпер для тестирования permit
 │
-└── UUPS # UUPS-фабрика с поддержкой апгрейдов
-# Прокси фабрики: 0x4bb6...
-# Шаблон счёта: 0x1328...
-├── AccountBoxV1.sol # V1 (0xb3f5...)
-└── AccountBoxV2.sol # V2 (0x9bc4...)
-</summary>
+└── UUPS/                            # Обновляемая фабрика + метатранзакции
+    ├── AccountBoxV1.sol             # Фабрика v1 (0xb3f5…3196)
+    └── AccountBoxV2.sol             # Фабрика v2 (0x9bc4…7cacc)
 
-<summary><strong>test/</strong> — тесты на Hardhat + Chai</summary>
-</details>
+🧪 Тесты
+test/
+├── setup.ts
+├── erc20/
+│   ├── AmetistToken.test.ts
+│   └── helpers.ts
+├── factory/
+│   └── Factory.test.ts
+├── meta/
+│   ├── meta.test.ts
+│   └── helpers.ts
+└── UUPS/
+    └── uups.test.ts
 
-├── setup.ts # Общая фикстура
-├── erc20
-│ ├── AmetistToken.test.ts
-│ └── helpers.ts
-├── factory
-│ └── Factory.test.ts
-├── meta
-│ ├── meta.test.ts
-│ └── helpers.ts
-└── UUPS
-└── uups.test.ts
-<details>
+🛠 Скрипты деплоя
+scripts/
+├── deployERC20.ts
+├── deployFactory.ts
+├── deployMeta.ts
+├── deployUUPS.ts
+└── logs/
+    ├── addresses.json     # временный, содержит адрес форвардера
+    └── deploy-log.txt     # временный лог всех адресов
 
-<summary><strong>scripts/</strong> — скрипты деплоя и верификации</summary>
-</details>
 
-├── deployERC20.ts # Деплой токена с Permit
-├── deployMeta.ts # Деплой счёта + форвардера
-├── deployFactory.ts # Деплой обычной фабрики (AccountBox)
-├── deployUUPS.ts # Деплой UUPS-прокси фабрики с апгрейдом
-└── logs
-├── addresses.json # Текущие адреса (форвардер и т.д.)
-└── deploy-log.txt # Адреса всех деплоев (не коммитится)
+🔗 Адреса задеплоенных контрактов (Sepolia)
+| Компонент                         | Имя контракта      | Адрес на Etherscan                                                                                  |
+| --------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------- |
+| **ERC20 токен**                   | `AmetistToken`     | [`0x9758...57C9`](https://sepolia.etherscan.io/address/0x97582ae3f90CC3d35c6c3f1838b0F5b2A79757C9)  |
+| **Форвардер**                     | `ERC2771Forwarder` | [`0xd8A7...72E`](https://sepolia.etherscan.io/address/0xd8A7886Afb35AF66be0bAFC40096c258Ce67d72E)   |
+| **Счет с метатранзакциями**       | `ETHAccountV1`     | [`0x36Ff...27b3`](https://sepolia.etherscan.io/address/0x36Ff21969D4E95f6eDafd265f6067D8d57E427b3)  |
+| **Фабрика (простая)**             | `AccountBox`       | [`0xb7A2...AF04`](https://sepolia.etherscan.io/address/0xb7A288e48c3c3B05F209E2d07274A50d8179AF04)  |
+| **Шаблон аккаунта (клонируемый)** | `ETHAccountV2`     | [`0x9030...03A`](https://sepolia.etherscan.io/address/0x90306DA1df984Fb36AF138BCA13cEA66F4Fe603A)   |
+| **Прокси (UUPS)**                 | `Proxy`            | [`0x4bb6...89bb`](https://sepolia.etherscan.io/address/0x4bb63E544046f128317D3C2e22d81a9575F189bb)  |
+| **Фабрика (UUPS V1)**             | `AccountBoxV1`     | [`0xb3f5...3196`](https://sepolia.etherscan.io/address/0xb3f5A086e1929aa29Fd4Cda520dFf82b845D3196)  |
+| **Фабрика (UUPS V2)**             | `AccountBoxV2`     | [`0x9bc4...7cacc`](https://sepolia.etherscan.io/address/0x9bc4640596b43e777bd3ee827ceef1d1bb47cacc) |
+| **Шаблон аккаунта (UUPS)**        | `ETHAccountV2`     | [`0x1328...748b`](https://sepolia.etherscan.io/address/0x1328c658D8b03de5a602D638abE4Cf876217d48b)  |
 
-<details>
 
-</details>
-
----
 
 ## 🛠 Используемые технологии
 
