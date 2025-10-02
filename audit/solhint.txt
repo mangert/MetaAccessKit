@@ -1,0 +1,257 @@
+
+contracts\commonInterfaces\IETHAccount.sol
+   9:1  warning  Missing @author tag in contract 'IETHAccount'        use-natspec
+  16:5  warning  GC: [amount] on Event [Deposited] could be Indexed   gas-indexed-events
+  23:5  warning  GC: [amount] on Event [Withdrawed] could be Indexed  gas-indexed-events
+
+contracts\erc20\AccessControl.sol
+   6:1  warning  Missing @title tag in contract 'AccessControl'                                                                    use-natspec
+   6:1  warning  Missing @author tag in contract 'AccessControl'                                                                   use-natspec
+   6:1  warning  Missing @notice tag in contract 'AccessControl'                                                                   use-natspec
+  16:5  warning  Function order is incorrect, contract constant declaration can not go after state variable declaration (line 14)  ordering
+  16:5  warning  Missing @notice tag in variable 'DEFAULT_ADMIN_ROLE'                                                              use-natspec
+  25:5  warning  Missing @notice tag in function 'getRoleAdmin'                                                                    use-natspec
+  25:5  warning  Missing @param tag in function 'getRoleAdmin'                                                                     use-natspec
+  25:5  warning  Mismatch in @param names for function 'getRoleAdmin'. Expected: [role], Found: []                                 use-natspec
+  25:5  warning  Missing @return tag in function 'getRoleAdmin'                                                                    use-natspec
+  25:5  warning  Mismatch in @return count for function 'getRoleAdmin'. Expected: 1, Found: 0                                      use-natspec
+  32:5  warning  Missing @param tag in function 'grantRole'                                                                        use-natspec
+  32:5  warning  Mismatch in @param names for function 'grantRole'. Expected: [role, account], Found: []                           use-natspec
+  39:5  warning  Missing @param tag in function 'revokeRole'                                                                       use-natspec
+  39:5  warning  Mismatch in @param names for function 'revokeRole'. Expected: [role, account], Found: []                          use-natspec
+  50:5  warning  Missing @return tag in function 'hasRole'                                                                         use-natspec
+  50:5  warning  Mismatch in @return count for function 'hasRole'. Expected: 1, Found: 0                                           use-natspec
+  58:5  warning  Missing @return tag in function '_checkRole'                                                                      use-natspec
+  58:5  warning  Mismatch in @return count for function '_checkRole'. Expected: 1, Found: 0                                        use-natspec
+  67:5  warning  Missing @return tag in function '_checkRole'                                                                      use-natspec
+  67:5  warning  Mismatch in @return count for function '_checkRole'. Expected: 1, Found: 0                                        use-natspec
+  97:2  warning  Line length must be no more than 120 but current length is 126                                                    max-line-length
+
+contracts\erc20\AmetistToken.sol
+   5:1   warning  global import of path @openzeppelin/contracts/token/ERC20/ERC20.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)                      no-global-import
+   6:1   warning  global import of path @openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)  no-global-import
+   8:1   warning  global import of path ./ERC20Permit.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)                                                  no-global-import
+   9:1   warning  global import of path ./AccessControl.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)                                                no-global-import
+  11:1   warning  Missing @title tag in contract 'AmetistToken'                                                                                                                                                                       use-natspec
+  11:1   warning  Missing @author tag in contract 'AmetistToken'                                                                                                                                                                      use-natspec
+  11:1   warning  Missing @notice tag in contract 'AmetistToken'                                                                                                                                                                      use-natspec
+  13:5   warning  Missing @notice tag in variable 'MINTER_ROLE'                                                                                                                                                                       use-natspec
+  15:5   warning  Missing @notice tag in function '<anonymous>'                                                                                                                                                                       use-natspec
+  24:5   warning  Missing @notice tag in function 'mint'                                                                                                                                                                              use-natspec
+  24:5   warning  Missing @param tag in function 'mint'                                                                                                                                                                               use-natspec
+  24:5   warning  Mismatch in @param names for function 'mint'. Expected: [to, amount], Found: []                                                                                                                                     use-natspec
+  24:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                                                           comprehensive-interface
+  24:69  warning  Visibility modifier must be first in list of modifiers                                                                                                                                                              visibility-modifier-order
+
+contracts\erc20\ERC20Permit.sol
+   6:1   warning  global import of path @openzeppelin/contracts/token/ERC20/ERC20.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)          no-global-import
+   7:1   warning  global import of path @openzeppelin/contracts/utils/cryptography/ECDSA.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)   no-global-import
+   8:1   warning  global import of path @openzeppelin/contracts/utils/cryptography/EIP712.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)  no-global-import
+   9:1   warning  global import of path @openzeppelin/contracts/utils/Nonces.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)               no-global-import
+  11:1   warning  Missing @title tag in contract 'ERC20Permit'                                                                                                                                                            use-natspec
+  11:1   warning  Missing @author tag in contract 'ERC20Permit'                                                                                                                                                           use-natspec
+  11:1   warning  Missing @notice tag in contract 'ERC20Permit'                                                                                                                                                           use-natspec
+  14:48  warning  GC: String exceeds 32 bytes                                                                                                                                                                             gas-small-strings
+  14:48  warning  GC: String exceeds 32 bytes                                                                                                                                                                             gas-small-strings
+  31:5   warning  Missing @notice tag in function '<anonymous>'                                                                                                                                                           use-natspec
+  31:5   warning  Missing @param tag in function '<anonymous>'                                                                                                                                                            use-natspec
+  31:5   warning  Mismatch in @param names for function '<anonymous>'. Expected: [name], Found: []                                                                                                                        use-natspec
+  34:5   warning  Missing @notice tag in function 'permit'                                                                                                                                                                use-natspec
+  34:5   warning  Missing @param tag in function 'permit'                                                                                                                                                                 use-natspec
+  34:5   warning  Mismatch in @param names for function 'permit'. Expected: [owner, spender, value, deadline, v, r, s], Found: []                                                                                         use-natspec
+  43:17  warning  GC: Non strict inequality found. Try converting to a strict one                                                                                                                                         gas-strict-inequalities
+  43:17  warning  Avoid making time-based decisions in your business logic                                                                                                                                                not-rely-on-time
+  71:5   warning  Missing @return tag in function 'nonces'                                                                                                                                                                use-natspec
+  71:5   warning  Mismatch in @return count for function 'nonces'. Expected: 1, Found: 0                                                                                                                                  use-natspec
+  78:5   warning  Function order is incorrect, external view function can not go after public view function (line 71)                                                                                                     ordering
+  78:5   warning  Missing @return tag in function 'DOMAIN_SEPARATOR'                                                                                                                                                      use-natspec
+  78:5   warning  Mismatch in @return count for function 'DOMAIN_SEPARATOR'. Expected: 1, Found: 0                                                                                                                        use-natspec
+  78:5   warning  Function name must be in mixedCase                                                                                                                                                                      func-name-mixedcase
+
+contracts\erc20\IAccessControl.sol
+   9:1  warning  Missing @author tag in contract 'IAccessControl'                                                   use-natspec
+  58:5  warning  Missing @return tag in function 'getRoleAdmin'                                                     use-natspec
+  58:5  warning  Mismatch in @return count for function 'getRoleAdmin'. Expected: 1, Found: 0                       use-natspec
+  65:5  warning  Function order is incorrect, external  function can not go after external view function (line 58)  ordering
+
+contracts\erc20\IERC20Permit.sol
+   9:1  warning  Missing @author tag in contract 'IERC20Permit'                                    use-natspec
+  35:5  warning  Missing @return tag in function 'nonces'                                          use-natspec
+  35:5  warning  Mismatch in @return count for function 'nonces'. Expected: 1, Found: 0            use-natspec
+  40:5  warning  Missing @return tag in function 'DOMAIN_SEPARATOR'                                use-natspec
+  40:5  warning  Mismatch in @return count for function 'DOMAIN_SEPARATOR'. Expected: 1, Found: 0  use-natspec
+
+contracts\factory\AccountBox.sol
+   5:1   warning  global import of path @openzeppelin/contracts/proxy/Clones.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)  no-global-import
+   6:1   warning  global import of path ../libs/IDGenerator.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)                   no-global-import
+  12:1   warning  Missing @author tag in contract 'AccountBox'                                                                                                                                               use-natspec
+  14:5   warning  Missing @notice tag in variable 'implementation'                                                                                                                                           use-natspec
+  14:5   warning  Immutable variables name are set to be in capitalized SNAKE_CASE                                                                                                                           immutable-vars-naming
+  19:5   warning  Missing @notice tag in variable 'userCounters'                                                                                                                                             use-natspec
+  27:5   warning  GC: [account] on Event [AccountCreated] could be Indexed                                                                                                                                   gas-indexed-events
+  29:5   warning  Missing @notice tag in function '<anonymous>'                                                                                                                                              use-natspec
+  29:5   warning  Missing @param tag in function '<anonymous>'                                                                                                                                               use-natspec
+  29:5   warning  Mismatch in @param names for function '<anonymous>'. Expected: [trustedForwarder], Found: []                                                                                               use-natspec
+  36:5   warning  Missing @return tag in function 'createClone'                                                                                                                                              use-natspec
+  36:5   warning  Mismatch in @return count for function 'createClone'. Expected: 1, Found: 0                                                                                                                use-natspec
+  36:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                                  comprehensive-interface
+  40:2   warning  Line length must be no more than 120 but current length is 135                                                                                                                             max-line-length
+  40:40  warning  GC: For [ userCounters ] variable, increment/decrement by 1 using: [ ++variable ] to save gas                                                                                              gas-increment-by-one
+  55:5   warning  Missing @return tag in function 'getAccountByIndex'                                                                                                                                        use-natspec
+  55:5   warning  Mismatch in @return count for function 'getAccountByIndex'. Expected: 1, Found: 0                                                                                                          use-natspec
+  55:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                                  comprehensive-interface
+
+contracts\factory\ETHAccountV2.sol
+   6:1   warning  global import of path ../libs/IDGenerator.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)  no-global-import
+  13:1   warning  Missing @author tag in contract 'ETHAccountV2'                                                                                                                            use-natspec
+  15:5   warning  Missing @notice tag in variable 'accountID'                                                                                                                               use-natspec
+  17:5   error    Explicitly mark visibility of state                                                                                                                                       state-visibility
+  26:5   warning  Missing @notice tag in function '<anonymous>'                                                                                                                             use-natspec
+  26:5   warning  Missing @param tag in function '<anonymous>'                                                                                                                              use-natspec
+  26:5   warning  Mismatch in @param names for function '<anonymous>'. Expected: [trustedForwarder_], Found: []                                                                             use-natspec
+  28:5   warning  Missing @notice tag in function 'initialize'                                                                                                                              use-natspec
+  28:5   warning  Missing @param tag in function 'initialize'                                                                                                                               use-natspec
+  28:5   warning  Mismatch in @param names for function 'initialize'. Expected: [_id, _owner], Found: []                                                                                    use-natspec
+  28:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                 comprehensive-interface
+  33:2   warning  Line length must be no more than 120 but current length is 130                                                                                                            max-line-length
+  42:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                 comprehensive-interface
+  52:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                 comprehensive-interface
+  63:5   warning  Function order is incorrect, receive function can not go after external  function (line 52)                                                                               ordering
+  63:5   warning  Missing @notice tag in function '<anonymous>'                                                                                                                             use-natspec
+  63:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                 comprehensive-interface
+  76:17  warning  GC: Non strict inequality found. Try converting to a strict one                                                                                                           gas-strict-inequalities
+
+contracts\libs\IDGenerator.sol
+   8:1  warning  Missing @author tag in contract 'IDGenerator'                              use-natspec
+  15:5  warning  Missing @return tag in function 'computeId'                                use-natspec
+  15:5  warning  Mismatch in @return count for function 'computeId'. Expected: 1, Found: 0  use-natspec
+
+contracts\meta\ERC2771Context.sol
+  10:1   warning  Missing @title tag in contract 'ERC2771Context'                                                use-natspec
+  10:1   warning  Missing @author tag in contract 'ERC2771Context'                                               use-natspec
+  10:1   warning  Missing @notice tag in contract 'ERC2771Context'                                               use-natspec
+  12:5   warning  Immutable variables name are set to be in capitalized SNAKE_CASE                               immutable-vars-naming
+  14:5   warning  Missing @notice tag in function '<anonymous>'                                                  use-natspec
+  14:5   warning  Missing @param tag in function '<anonymous>'                                                   use-natspec
+  14:5   warning  Mismatch in @param names for function '<anonymous>'. Expected: [trustedForwarder_], Found: []  use-natspec
+  21:5   warning  Missing @return tag in function 'trustedForwarder'                                             use-natspec
+  21:5   warning  Mismatch in @return count for function 'trustedForwarder'. Expected: 1, Found: 0               use-natspec
+  29:5   warning  Mismatch in @param names for function 'isTrustedForwarder'. Expected: [forwarder], Found: []   use-natspec
+  29:5   warning  Missing @return tag in function 'isTrustedForwarder'                                           use-natspec
+  29:5   warning  Mismatch in @return count for function 'isTrustedForwarder'. Expected: 1, Found: 0             use-natspec
+  38:5   warning  Missing @return tag in function '_msgSender'                                                   use-natspec
+  38:5   warning  Mismatch in @return count for function '_msgSender'. Expected: 1, Found: 0                     use-natspec
+  41:47  warning  GC: Non strict inequality found. Try converting to a strict one                                gas-strict-inequalities
+  53:5   warning  Missing @return tag in function '_msgData'                                                     use-natspec
+  53:5   warning  Mismatch in @return count for function '_msgData'. Expected: 1, Found: 0                       use-natspec
+  56:47  warning  GC: Non strict inequality found. Try converting to a strict one                                gas-strict-inequalities
+  66:5   warning  Missing @return tag in function '_contextSuffixLength'                                         use-natspec
+  66:5   warning  Mismatch in @return count for function '_contextSuffixLength'. Expected: 1, Found: 0           use-natspec
+
+contracts\meta\ERC2771Forwarder.sol
+   16:1   warning  Missing @title tag in contract 'ERC2771Forwarder'                                                              use-natspec
+   16:1   warning  Missing @author tag in contract 'ERC2771Forwarder'                                                             use-natspec
+   20:5   warning  GC: For [ ForwardRequestData ] struct, packing seems inefficient. Try rearranging to achieve 32bytes slots     gas-struct-packing
+   32:9   warning  GC: String exceeds 32 bytes                                                                                    gas-small-strings
+   32:9   warning  GC: String exceeds 32 bytes                                                                                    gas-small-strings
+   42:5   warning  GC: [nonce] on Event [ExecutedForwardRequest] could be Indexed                                                 gas-indexed-events
+   42:5   warning  GC: [success] on Event [ExecutedForwardRequest] could be Indexed                                               gas-indexed-events
+   72:5   warning  Missing @notice tag in function '<anonymous>'                                                                  use-natspec
+   72:5   warning  Missing @param tag in function '<anonymous>'                                                                   use-natspec
+   72:5   warning  Mismatch in @param names for function '<anonymous>'. Expected: [name], Found: []                               use-natspec
+   78:5   warning  Missing @return tag in function 'verify'                                                                       use-natspec
+   78:5   warning  Mismatch in @return count for function 'verify'. Expected: 1, Found: 0                                         use-natspec
+   78:5   warning  All public or external methods in a contract must override a definition from an interface                      comprehensive-interface
+   87:5   warning  Function order is incorrect, public payable function can not go after public view function (line 78)           ordering
+   87:5   warning  All public or external methods in a contract must override a definition from an interface                      comprehensive-interface
+  103:5   warning  All public or external methods in a contract must override a definition from an interface                      comprehensive-interface
+  107:2   warning  Line length must be no more than 120 but current length is 122                                                 max-line-length
+  134:2   warning  Line length must be no more than 120 but current length is 132                                                 max-line-length
+  149:13  warning  GC: Non strict inequality found. Try converting to a strict one                                                gas-strict-inequalities
+  149:33  warning  Avoid making time-based decisions in your business logic                                                       not-rely-on-time
+  159:5   warning  Missing @return tag in function '_recoverForwardRequestSigner'                                                 use-natspec
+  159:5   warning  Mismatch in @return names for function '_recoverForwardRequestSigner'. Expected: [isValid, signer], Found: []  use-natspec
+  183:2   warning  Line length must be no more than 120 but current length is 143                                                 max-line-length
+  185:5   warning  Missing @return tag in function '_execute'                                                                     use-natspec
+  185:5   warning  Mismatch in @return names for function '_execute'. Expected: [success], Found: []                              use-natspec
+  206:2   warning  Line length must be no more than 120 but current length is 127                                                 max-line-length
+  217:13  error    Avoid to use inline assembly. It is acceptable only in rare cases                                              no-inline-assembly
+  224:2   warning  Line length must be no more than 120 but current length is 128                                                 max-line-length
+  232:5   warning  Missing @return tag in function '_isTrustedByTarget'                                                           use-natspec
+  232:5   warning  Mismatch in @return count for function '_isTrustedByTarget'. Expected: 1, Found: 0                             use-natspec
+  238:9   error    Avoid to use inline assembly. It is acceptable only in rare cases                                              no-inline-assembly
+  244:27  warning  GC: Non strict inequality found. Try converting to a strict one                                                gas-strict-inequalities
+  256:2   warning  Line length must be no more than 120 but current length is 134                                                 max-line-length
+  258:13  error    Avoid to use inline assembly. It is acceptable only in rare cases                                              no-inline-assembly
+
+contracts\meta\ETHAccountV1.sol
+   6:1   warning  global import of path ../libs/IDGenerator.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)  no-global-import
+  14:1   warning  Missing @author tag in contract 'ETHAccountV1'                                                                                                                            use-natspec
+  16:5   warning  Missing @notice tag in variable 'accountID'                                                                                                                               use-natspec
+  16:5   warning  Immutable variables name are set to be in capitalized SNAKE_CASE                                                                                                          immutable-vars-naming
+  24:5   warning  Missing @notice tag in function '<anonymous>'                                                                                                                             use-natspec
+  24:5   warning  Missing @param tag in function '<anonymous>'                                                                                                                              use-natspec
+  24:5   warning  Mismatch in @param names for function '<anonymous>'. Expected: [_id, trustedForwarder_], Found: []                                                                        use-natspec
+  27:2   warning  Line length must be no more than 120 but current length is 137                                                                                                            max-line-length
+  34:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                 comprehensive-interface
+  44:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                 comprehensive-interface
+  55:5   warning  Function order is incorrect, receive function can not go after external  function (line 44)                                                                               ordering
+  55:5   warning  Missing @notice tag in function '<anonymous>'                                                                                                                             use-natspec
+  55:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                 comprehensive-interface
+  68:17  warning  GC: Non strict inequality found. Try converting to a strict one                                                                                                           gas-strict-inequalities
+
+contracts\test-helpers\ERC20Proxy.sol
+   5:1  warning  global import of path ../erc20/AmetistToken.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)  no-global-import
+  11:1  warning  Missing @author tag in contract 'ERC20Proxy'                                                                                                                                use-natspec
+  13:5  warning  Missing @notice tag in function 'doSend'                                                                                                                                    use-natspec
+  13:5  warning  Missing @param tag in function 'doSend'                                                                                                                                     use-natspec
+  13:5  warning  Mismatch in @param names for function 'doSend'. Expected: [token, owner, spender, value, deadline, v, r, s], Found: []                                                      use-natspec
+  13:5  warning  All public or external methods in a contract must override a definition from an interface                                                                                   comprehensive-interface
+
+contracts\UUPS\AccountBoxV1.sol
+   5:1   warning  global import of path @openzeppelin/contracts/proxy/Clones.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)  no-global-import
+   6:1   warning  global import of path ../libs/IDGenerator.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)                   no-global-import
+  16:1   warning  Missing @author tag in contract 'AccountBoxV1'                                                                                                                                             use-natspec
+  18:5   warning  Missing @notice tag in variable 'implementation'                                                                                                                                           use-natspec
+  23:5   warning  Missing @notice tag in variable 'userCounters'                                                                                                                                             use-natspec
+  31:5   warning  GC: [account] on Event [AccountCreated] could be Indexed                                                                                                                                   gas-indexed-events
+  38:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                                  comprehensive-interface
+  47:5   warning  Function order is incorrect, external  function can not go after public  function (line 38)                                                                                                ordering
+  47:5   warning  Missing @return tag in function 'createClone'                                                                                                                                              use-natspec
+  47:5   warning  Mismatch in @return count for function 'createClone'. Expected: 1, Found: 0                                                                                                                use-natspec
+  47:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                                  comprehensive-interface
+  51:2   warning  Line length must be no more than 120 but current length is 135                                                                                                                             max-line-length
+  51:40  warning  GC: For [ userCounters ] variable, increment/decrement by 1 using: [ ++variable ] to save gas                                                                                              gas-increment-by-one
+  66:5   warning  Missing @return tag in function 'getAccountByIndex'                                                                                                                                        use-natspec
+  66:5   warning  Mismatch in @return count for function 'getAccountByIndex'. Expected: 1, Found: 0                                                                                                          use-natspec
+  66:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                                  comprehensive-interface
+  80:5   warning  Code contains empty blocks                                                                                                                                                                 no-empty-blocks
+
+contracts\UUPS\AccountBoxV2.sol
+   5:1   warning  global import of path @openzeppelin/contracts/proxy/Clones.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)  no-global-import
+   6:1   warning  global import of path ../libs/IDGenerator.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import "path" as Name)                   no-global-import
+  16:1   warning  Missing @author tag in contract 'AccountBoxV2'                                                                                                                                             use-natspec
+  18:5   warning  Missing @notice tag in variable 'implementation'                                                                                                                                           use-natspec
+  23:5   warning  Missing @notice tag in variable 'userCounters'                                                                                                                                             use-natspec
+  31:5   warning  GC: [account] on Event [AccountCreated] could be Indexed                                                                                                                                   gas-indexed-events
+  38:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                                  comprehensive-interface
+  47:5   warning  Function order is incorrect, external  function can not go after public  function (line 38)                                                                                                ordering
+  47:5   warning  Missing @return tag in function 'createClone'                                                                                                                                              use-natspec
+  47:5   warning  Mismatch in @return count for function 'createClone'. Expected: 1, Found: 0                                                                                                                use-natspec
+  47:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                                  comprehensive-interface
+  51:2   warning  Line length must be no more than 120 but current length is 135                                                                                                                             max-line-length
+  51:40  warning  GC: For [ userCounters ] variable, increment/decrement by 1 using: [ ++variable ] to save gas                                                                                              gas-increment-by-one
+  66:5   warning  Missing @return tag in function 'getAccountByIndex'                                                                                                                                        use-natspec
+  66:5   warning  Mismatch in @return count for function 'getAccountByIndex'. Expected: 1, Found: 0                                                                                                          use-natspec
+  66:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                                  comprehensive-interface
+  77:5   warning  Missing @return tag in function 'getAccountById'                                                                                                                                           use-natspec
+  77:5   warning  Mismatch in @return count for function 'getAccountById'. Expected: 1, Found: 0                                                                                                             use-natspec
+  77:5   warning  All public or external methods in a contract must override a definition from an interface                                                                                                  comprehensive-interface
+  91:5   warning  Code contains empty blocks                                                                                                                                                                 no-empty-blocks
+
+✖ 220 problems (4 errors, 216 warnings)
+
+ -------------------------------------------------------------------------- 
+ ===> Join SOLHINT Community at: https://discord.com/invite/4TYGq3zpjs <=== 
+ -------------------------------------------------------------------------- 
+

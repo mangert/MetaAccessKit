@@ -1,0 +1,1850 @@
+[
+    {
+        "line": 9,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'IETHAccount'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\commonInterfaces\\IETHAccount.sol"
+    },
+    {
+        "line": 16,
+        "column": 5,
+        "severity": "Warning",
+        "message": "GC: [amount] on Event [Deposited] could be Indexed",
+        "ruleId": "gas-indexed-events",
+        "fix": null,
+        "filePath": "contracts\\commonInterfaces\\IETHAccount.sol"
+    },
+    {
+        "line": 23,
+        "column": 5,
+        "severity": "Warning",
+        "message": "GC: [amount] on Event [Withdrawed] could be Indexed",
+        "ruleId": "gas-indexed-events",
+        "fix": null,
+        "filePath": "contracts\\commonInterfaces\\IETHAccount.sol"
+    },
+    {
+        "line": 6,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @title tag in contract 'AccessControl'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 6,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'AccessControl'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 6,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @notice tag in contract 'AccessControl'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 16,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Function order is incorrect, contract constant declaration can not go after state variable declaration (line 14)",
+        "ruleId": "ordering",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 16,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in variable 'DEFAULT_ADMIN_ROLE'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 25,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in function 'getRoleAdmin'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 25,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @param tag in function 'getRoleAdmin'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 25,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @param names for function 'getRoleAdmin'. Expected: [role], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 25,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'getRoleAdmin'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 25,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'getRoleAdmin'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 32,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @param tag in function 'grantRole'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 32,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @param names for function 'grantRole'. Expected: [role, account], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 39,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @param tag in function 'revokeRole'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 39,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @param names for function 'revokeRole'. Expected: [role, account], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 50,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'hasRole'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 50,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'hasRole'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 58,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function '_checkRole'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 58,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function '_checkRole'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 67,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function '_checkRole'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 67,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function '_checkRole'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 97,
+        "column": 2,
+        "severity": "Warning",
+        "message": "Line length must be no more than 120 but current length is 126.",
+        "ruleId": "max-line-length",
+        "fix": null,
+        "filePath": "contracts\\erc20\\AccessControl.sol"
+    },
+    {
+        "line": 5,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path @openzeppelin/contracts/token/ERC20/ERC20.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\erc20\\AmetistToken.sol"
+    },
+    {
+        "line": 6,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path @openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\erc20\\AmetistToken.sol"
+    },
+    {
+        "line": 8,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path ./ERC20Permit.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\erc20\\AmetistToken.sol"
+    },
+    {
+        "line": 9,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path ./AccessControl.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\erc20\\AmetistToken.sol"
+    },
+    {
+        "line": 11,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @title tag in contract 'AmetistToken'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AmetistToken.sol"
+    },
+    {
+        "line": 11,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'AmetistToken'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AmetistToken.sol"
+    },
+    {
+        "line": 11,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @notice tag in contract 'AmetistToken'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AmetistToken.sol"
+    },
+    {
+        "line": 13,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in variable 'MINTER_ROLE'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AmetistToken.sol"
+    },
+    {
+        "line": 15,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AmetistToken.sol"
+    },
+    {
+        "line": 24,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in function 'mint'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AmetistToken.sol"
+    },
+    {
+        "line": 24,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @param tag in function 'mint'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AmetistToken.sol"
+    },
+    {
+        "line": 24,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @param names for function 'mint'. Expected: [to, amount], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\AmetistToken.sol"
+    },
+    {
+        "line": 24,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\erc20\\AmetistToken.sol"
+    },
+    {
+        "line": 24,
+        "column": 69,
+        "severity": "Warning",
+        "message": "Visibility modifier must be first in list of modifiers",
+        "ruleId": "visibility-modifier-order",
+        "fix": null,
+        "filePath": "contracts\\erc20\\AmetistToken.sol"
+    },
+    {
+        "line": 6,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path @openzeppelin/contracts/token/ERC20/ERC20.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 7,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path @openzeppelin/contracts/utils/cryptography/ECDSA.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 8,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path @openzeppelin/contracts/utils/cryptography/EIP712.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 9,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path @openzeppelin/contracts/utils/Nonces.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 11,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @title tag in contract 'ERC20Permit'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 11,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'ERC20Permit'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 11,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @notice tag in contract 'ERC20Permit'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 14,
+        "column": 48,
+        "severity": "Warning",
+        "message": "GC: String exceeds 32 bytes",
+        "ruleId": "gas-small-strings",
+        "fix": null,
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 14,
+        "column": 48,
+        "severity": "Warning",
+        "message": "GC: String exceeds 32 bytes",
+        "ruleId": "gas-small-strings",
+        "fix": null,
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 31,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 31,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @param tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 31,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @param names for function '<anonymous>'. Expected: [name], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 34,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in function 'permit'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 34,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @param tag in function 'permit'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 34,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @param names for function 'permit'. Expected: [owner, spender, value, deadline, v, r, s], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 43,
+        "column": 17,
+        "severity": "Warning",
+        "message": "GC: Non strict inequality found. Try converting to a strict one",
+        "ruleId": "gas-strict-inequalities",
+        "fix": null,
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 43,
+        "column": 17,
+        "severity": "Warning",
+        "message": "Avoid making time-based decisions in your business logic",
+        "ruleId": "not-rely-on-time",
+        "fix": null,
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 71,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'nonces'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 71,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'nonces'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 78,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Function order is incorrect, external view function can not go after public view function (line 71)",
+        "ruleId": "ordering",
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 78,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'DOMAIN_SEPARATOR'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 78,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'DOMAIN_SEPARATOR'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 78,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Function name must be in mixedCase",
+        "ruleId": "func-name-mixedcase",
+        "fix": null,
+        "filePath": "contracts\\erc20\\ERC20Permit.sol"
+    },
+    {
+        "line": 9,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'IAccessControl'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\IAccessControl.sol"
+    },
+    {
+        "line": 58,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'getRoleAdmin'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\IAccessControl.sol"
+    },
+    {
+        "line": 58,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'getRoleAdmin'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\IAccessControl.sol"
+    },
+    {
+        "line": 65,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Function order is incorrect, external  function can not go after external view function (line 58)",
+        "ruleId": "ordering",
+        "filePath": "contracts\\erc20\\IAccessControl.sol"
+    },
+    {
+        "line": 9,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'IERC20Permit'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\IERC20Permit.sol"
+    },
+    {
+        "line": 35,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'nonces'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\IERC20Permit.sol"
+    },
+    {
+        "line": 35,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'nonces'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\IERC20Permit.sol"
+    },
+    {
+        "line": 40,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'DOMAIN_SEPARATOR'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\IERC20Permit.sol"
+    },
+    {
+        "line": 40,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'DOMAIN_SEPARATOR'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\erc20\\IERC20Permit.sol"
+    },
+    {
+        "line": 5,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path @openzeppelin/contracts/proxy/Clones.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 6,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path ../libs/IDGenerator.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 12,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'AccountBox'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 14,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in variable 'implementation'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 14,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Immutable variables name are set to be in capitalized SNAKE_CASE",
+        "ruleId": "immutable-vars-naming",
+        "fix": null,
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 19,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in variable 'userCounters'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 27,
+        "column": 5,
+        "severity": "Warning",
+        "message": "GC: [account] on Event [AccountCreated] could be Indexed",
+        "ruleId": "gas-indexed-events",
+        "fix": null,
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 29,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 29,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @param tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 29,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @param names for function '<anonymous>'. Expected: [trustedForwarder], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 36,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'createClone'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 36,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'createClone'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 36,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 40,
+        "column": 2,
+        "severity": "Warning",
+        "message": "Line length must be no more than 120 but current length is 135.",
+        "ruleId": "max-line-length",
+        "fix": null,
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 40,
+        "column": 40,
+        "severity": "Warning",
+        "message": "GC: For [ userCounters ] variable, increment/decrement by 1 using: [ ++variable ] to save gas",
+        "ruleId": "gas-increment-by-one",
+        "fix": null,
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 55,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'getAccountByIndex'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 55,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'getAccountByIndex'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 55,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\factory\\AccountBox.sol"
+    },
+    {
+        "line": 6,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path ../libs/IDGenerator.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 13,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'ETHAccountV2'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 15,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in variable 'accountID'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 17,
+        "column": 5,
+        "severity": "Error",
+        "message": "Explicitly mark visibility of state",
+        "ruleId": "state-visibility",
+        "fix": null,
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 26,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 26,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @param tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 26,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @param names for function '<anonymous>'. Expected: [trustedForwarder_], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 28,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in function 'initialize'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 28,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @param tag in function 'initialize'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 28,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @param names for function 'initialize'. Expected: [_id, _owner], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 28,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 33,
+        "column": 2,
+        "severity": "Warning",
+        "message": "Line length must be no more than 120 but current length is 130.",
+        "ruleId": "max-line-length",
+        "fix": null,
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 42,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 52,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 63,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Function order is incorrect, receive function can not go after external  function (line 52)",
+        "ruleId": "ordering",
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 63,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 63,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 76,
+        "column": 17,
+        "severity": "Warning",
+        "message": "GC: Non strict inequality found. Try converting to a strict one",
+        "ruleId": "gas-strict-inequalities",
+        "fix": null,
+        "filePath": "contracts\\factory\\ETHAccountV2.sol"
+    },
+    {
+        "line": 8,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'IDGenerator'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\libs\\IDGenerator.sol"
+    },
+    {
+        "line": 15,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'computeId'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\libs\\IDGenerator.sol"
+    },
+    {
+        "line": 15,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'computeId'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\libs\\IDGenerator.sol"
+    },
+    {
+        "line": 10,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @title tag in contract 'ERC2771Context'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 10,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'ERC2771Context'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 10,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @notice tag in contract 'ERC2771Context'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 12,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Immutable variables name are set to be in capitalized SNAKE_CASE",
+        "ruleId": "immutable-vars-naming",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 14,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 14,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @param tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 14,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @param names for function '<anonymous>'. Expected: [trustedForwarder_], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 21,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'trustedForwarder'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 21,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'trustedForwarder'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 29,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @param names for function 'isTrustedForwarder'. Expected: [forwarder], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 29,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'isTrustedForwarder'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 29,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'isTrustedForwarder'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 38,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function '_msgSender'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 38,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function '_msgSender'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 41,
+        "column": 47,
+        "severity": "Warning",
+        "message": "GC: Non strict inequality found. Try converting to a strict one",
+        "ruleId": "gas-strict-inequalities",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 53,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function '_msgData'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 53,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function '_msgData'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 56,
+        "column": 47,
+        "severity": "Warning",
+        "message": "GC: Non strict inequality found. Try converting to a strict one",
+        "ruleId": "gas-strict-inequalities",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 66,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function '_contextSuffixLength'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 66,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function '_contextSuffixLength'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Context.sol"
+    },
+    {
+        "line": 16,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @title tag in contract 'ERC2771Forwarder'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 16,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'ERC2771Forwarder'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 20,
+        "column": 5,
+        "severity": "Warning",
+        "message": "GC: For [ ForwardRequestData ] struct, packing seems inefficient. Try rearranging to achieve 32bytes slots",
+        "ruleId": "gas-struct-packing",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 32,
+        "column": 9,
+        "severity": "Warning",
+        "message": "GC: String exceeds 32 bytes",
+        "ruleId": "gas-small-strings",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 32,
+        "column": 9,
+        "severity": "Warning",
+        "message": "GC: String exceeds 32 bytes",
+        "ruleId": "gas-small-strings",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 42,
+        "column": 5,
+        "severity": "Warning",
+        "message": "GC: [nonce] on Event [ExecutedForwardRequest] could be Indexed",
+        "ruleId": "gas-indexed-events",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 42,
+        "column": 5,
+        "severity": "Warning",
+        "message": "GC: [success] on Event [ExecutedForwardRequest] could be Indexed",
+        "ruleId": "gas-indexed-events",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 72,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 72,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @param tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 72,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @param names for function '<anonymous>'. Expected: [name], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 78,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'verify'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 78,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'verify'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 78,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 87,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Function order is incorrect, public payable function can not go after public view function (line 78)",
+        "ruleId": "ordering",
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 87,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 103,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 107,
+        "column": 2,
+        "severity": "Warning",
+        "message": "Line length must be no more than 120 but current length is 122.",
+        "ruleId": "max-line-length",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 134,
+        "column": 2,
+        "severity": "Warning",
+        "message": "Line length must be no more than 120 but current length is 132.",
+        "ruleId": "max-line-length",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 149,
+        "column": 13,
+        "severity": "Warning",
+        "message": "GC: Non strict inequality found. Try converting to a strict one",
+        "ruleId": "gas-strict-inequalities",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 149,
+        "column": 33,
+        "severity": "Warning",
+        "message": "Avoid making time-based decisions in your business logic",
+        "ruleId": "not-rely-on-time",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 159,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function '_recoverForwardRequestSigner'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 159,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return names for function '_recoverForwardRequestSigner'. Expected: [isValid, signer], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 183,
+        "column": 2,
+        "severity": "Warning",
+        "message": "Line length must be no more than 120 but current length is 143.",
+        "ruleId": "max-line-length",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 185,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function '_execute'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 185,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return names for function '_execute'. Expected: [success], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 206,
+        "column": 2,
+        "severity": "Warning",
+        "message": "Line length must be no more than 120 but current length is 127.",
+        "ruleId": "max-line-length",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 217,
+        "column": 13,
+        "severity": "Error",
+        "message": "Avoid to use inline assembly. It is acceptable only in rare cases",
+        "ruleId": "no-inline-assembly",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 224,
+        "column": 2,
+        "severity": "Warning",
+        "message": "Line length must be no more than 120 but current length is 128.",
+        "ruleId": "max-line-length",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 232,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function '_isTrustedByTarget'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 232,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function '_isTrustedByTarget'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 238,
+        "column": 9,
+        "severity": "Error",
+        "message": "Avoid to use inline assembly. It is acceptable only in rare cases",
+        "ruleId": "no-inline-assembly",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 244,
+        "column": 27,
+        "severity": "Warning",
+        "message": "GC: Non strict inequality found. Try converting to a strict one",
+        "ruleId": "gas-strict-inequalities",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 256,
+        "column": 2,
+        "severity": "Warning",
+        "message": "Line length must be no more than 120 but current length is 134.",
+        "ruleId": "max-line-length",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 258,
+        "column": 13,
+        "severity": "Error",
+        "message": "Avoid to use inline assembly. It is acceptable only in rare cases",
+        "ruleId": "no-inline-assembly",
+        "fix": null,
+        "filePath": "contracts\\meta\\ERC2771Forwarder.sol"
+    },
+    {
+        "line": 6,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path ../libs/IDGenerator.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\meta\\ETHAccountV1.sol"
+    },
+    {
+        "line": 14,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'ETHAccountV1'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ETHAccountV1.sol"
+    },
+    {
+        "line": 16,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in variable 'accountID'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ETHAccountV1.sol"
+    },
+    {
+        "line": 16,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Immutable variables name are set to be in capitalized SNAKE_CASE",
+        "ruleId": "immutable-vars-naming",
+        "fix": null,
+        "filePath": "contracts\\meta\\ETHAccountV1.sol"
+    },
+    {
+        "line": 24,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ETHAccountV1.sol"
+    },
+    {
+        "line": 24,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @param tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ETHAccountV1.sol"
+    },
+    {
+        "line": 24,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @param names for function '<anonymous>'. Expected: [_id, trustedForwarder_], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ETHAccountV1.sol"
+    },
+    {
+        "line": 27,
+        "column": 2,
+        "severity": "Warning",
+        "message": "Line length must be no more than 120 but current length is 137.",
+        "ruleId": "max-line-length",
+        "fix": null,
+        "filePath": "contracts\\meta\\ETHAccountV1.sol"
+    },
+    {
+        "line": 34,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\meta\\ETHAccountV1.sol"
+    },
+    {
+        "line": 44,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\meta\\ETHAccountV1.sol"
+    },
+    {
+        "line": 55,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Function order is incorrect, receive function can not go after external  function (line 44)",
+        "ruleId": "ordering",
+        "filePath": "contracts\\meta\\ETHAccountV1.sol"
+    },
+    {
+        "line": 55,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in function '<anonymous>'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\meta\\ETHAccountV1.sol"
+    },
+    {
+        "line": 55,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\meta\\ETHAccountV1.sol"
+    },
+    {
+        "line": 68,
+        "column": 17,
+        "severity": "Warning",
+        "message": "GC: Non strict inequality found. Try converting to a strict one",
+        "ruleId": "gas-strict-inequalities",
+        "fix": null,
+        "filePath": "contracts\\meta\\ETHAccountV1.sol"
+    },
+    {
+        "line": 5,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path ../erc20/AmetistToken.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\test-helpers\\ERC20Proxy.sol"
+    },
+    {
+        "line": 11,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'ERC20Proxy'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\test-helpers\\ERC20Proxy.sol"
+    },
+    {
+        "line": 13,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in function 'doSend'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\test-helpers\\ERC20Proxy.sol"
+    },
+    {
+        "line": 13,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @param tag in function 'doSend'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\test-helpers\\ERC20Proxy.sol"
+    },
+    {
+        "line": 13,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @param names for function 'doSend'. Expected: [token, owner, spender, value, deadline, v, r, s], Found: []",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\test-helpers\\ERC20Proxy.sol"
+    },
+    {
+        "line": 13,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\test-helpers\\ERC20Proxy.sol"
+    },
+    {
+        "line": 5,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path @openzeppelin/contracts/proxy/Clones.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 6,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path ../libs/IDGenerator.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 16,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'AccountBoxV1'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 18,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in variable 'implementation'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 23,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in variable 'userCounters'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 31,
+        "column": 5,
+        "severity": "Warning",
+        "message": "GC: [account] on Event [AccountCreated] could be Indexed",
+        "ruleId": "gas-indexed-events",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 38,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 47,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Function order is incorrect, external  function can not go after public  function (line 38)",
+        "ruleId": "ordering",
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 47,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'createClone'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 47,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'createClone'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 47,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 51,
+        "column": 2,
+        "severity": "Warning",
+        "message": "Line length must be no more than 120 but current length is 135.",
+        "ruleId": "max-line-length",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 51,
+        "column": 40,
+        "severity": "Warning",
+        "message": "GC: For [ userCounters ] variable, increment/decrement by 1 using: [ ++variable ] to save gas",
+        "ruleId": "gas-increment-by-one",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 66,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'getAccountByIndex'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 66,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'getAccountByIndex'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 66,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 80,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Code contains empty blocks",
+        "ruleId": "no-empty-blocks",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV1.sol"
+    },
+    {
+        "line": 5,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path @openzeppelin/contracts/proxy/Clones.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 6,
+        "column": 1,
+        "severity": "Warning",
+        "message": "global import of path ../libs/IDGenerator.sol is not allowed. Specify names to import individually or bind all exports of the module into a name (import \"path\" as Name)",
+        "ruleId": "no-global-import",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 16,
+        "column": 1,
+        "severity": "Warning",
+        "message": "Missing @author tag in contract 'AccountBoxV2'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 18,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in variable 'implementation'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 23,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @notice tag in variable 'userCounters'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 31,
+        "column": 5,
+        "severity": "Warning",
+        "message": "GC: [account] on Event [AccountCreated] could be Indexed",
+        "ruleId": "gas-indexed-events",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 38,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 47,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Function order is incorrect, external  function can not go after public  function (line 38)",
+        "ruleId": "ordering",
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 47,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'createClone'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 47,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'createClone'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 47,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 51,
+        "column": 2,
+        "severity": "Warning",
+        "message": "Line length must be no more than 120 but current length is 135.",
+        "ruleId": "max-line-length",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 51,
+        "column": 40,
+        "severity": "Warning",
+        "message": "GC: For [ userCounters ] variable, increment/decrement by 1 using: [ ++variable ] to save gas",
+        "ruleId": "gas-increment-by-one",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 66,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'getAccountByIndex'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 66,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'getAccountByIndex'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 66,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 77,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Missing @return tag in function 'getAccountById'",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 77,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Mismatch in @return count for function 'getAccountById'. Expected: 1, Found: 0",
+        "ruleId": "use-natspec",
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 77,
+        "column": 5,
+        "severity": "Warning",
+        "message": "All public or external methods in a contract must override a definition from an interface",
+        "ruleId": "comprehensive-interface",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "line": 91,
+        "column": 5,
+        "severity": "Warning",
+        "message": "Code contains empty blocks",
+        "ruleId": "no-empty-blocks",
+        "fix": null,
+        "filePath": "contracts\\UUPS\\AccountBoxV2.sol"
+    },
+    {
+        "conclusion": "220 problem/s (4 error/s, 216 warning/s)"
+    }
+]

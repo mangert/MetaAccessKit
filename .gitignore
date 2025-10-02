@@ -18,6 +18,7 @@ ignition/deployments/chain-31337
 
 # черновики, логи и справочные данные
 data.txt
+contracts.md
 scripts/logs/deploy-log.txt
 scripts/logs/addresses.json
 scripts/verifyFactory.ts
