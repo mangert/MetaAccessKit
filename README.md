@@ -94,6 +94,20 @@ scripts/
 | **Шаблон аккаунта (UUPS)**        | `ETHAccountV2`     | [`0x1328...748b`](https://sepolia.etherscan.io/address/0x1328c658D8b03de5a602D638abE4Cf876217d48b)  |
 
 
+🔗 Адреса задеплоенных контрактов (Sepolia) ***после аудита***
+| Компонент                         | Имя контракта      | Адрес на Etherscan                                                                                  |
+| --------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------- |
+| **ERC20 токен**                   | `AmetistToken`     | [`0xf3d8...59B4`](https://sepolia.etherscan.io/address/0xf3d8391701D99C3766e3ceE65914D551775359B4)  |
+| **Форвардер**                     | `ERC2771Forwarder` | [`0x5dfe...bf1e`](https://sepolia.etherscan.io/address/0x5dfe6554F61B471467Ea9a8aab195d93C407bf1e)   |
+| **Счет с метатранзакциями**       | `ETHAccountV1`     | [`0x3060...3CEd`](https://sepolia.etherscan.io/address/0x30603b65BCe6047190818be98E1604a39a6e3CEd)  |
+| **Фабрика (простая)**             | `AccountBox`       | [`0x7e28...0fAC`](https://sepolia.etherscan.io/address/0x7e285a196C988F7a8D94fD97119c1F5080440fAC)  |
+| **Шаблон аккаунта (клонируемый)** | `ETHAccountV2`     | [`0x4d1e...f06f`](https://sepolia.etherscan.io/address/0x4d1e3Cb8f668a5A786d44Cf548135aa4D219f06f)   |
+| **Прокси (UUPS)**                 | `Proxy`            | [`0xaA5a...f766`](https://sepolia.etherscan.io/address/0xaA5a3AB4445a588dEC8EB5821d64B4AB644ff766)  |
+| **Фабрика (UUPS V1)**             | `AccountBoxV1`     | [`0x2e8c...B3A0`](https://sepolia.etherscan.io/address/0x2e8cBa8f55311905B7284182ebf22B81FA85B3A0)  |
+| **Фабрика (UUPS V2)**             | `AccountBoxV2`     | [`0x4963...4d76`](https://sepolia.etherscan.io/address/0x4963cE96E441D85B9895e02247F120B427C04d76) |
+| **Шаблон аккаунта (UUPS)**        | `ETHAccountV2`     | [`0x4d1e...f06f`](https://sepolia.etherscan.io/address/0x4d1e3Cb8f668a5A786d44Cf548135aa4D219f06f)  |
+
+
 
 ## 🛠 Используемые технологии
 
@@ -128,9 +142,3 @@ scripts/
 
 ```bash
 npx hardhat run scripts/deployUUPS.ts --network sepolia
-
-
-
-
-
-
