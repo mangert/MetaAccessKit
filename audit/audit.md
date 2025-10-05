@@ -44,7 +44,7 @@
 | **AmetistToken.sol**         | Глобальные импорты, публичный метод `mint` без интерфейса |
 | **ERC20Permit.sol**          | Длинные строки, reliance on time, отсутствует NatSpec     |
 | **AccountBox.sol**           | Глобальные импорты, gas-increment-by-one                  |
-| **ETHAccountV1/V2.sol**      | Отсутствие visibility, высокая cyclomatic complexity      |
+| **ETHAccountV1/V2.sol**      | Отсутствие visibility                                     |
 | **ERC2771Forwarder.sol**     | Inline assembly, struct packing, длинные строки           |
 | **UUPS/AccountBoxV1/V2.sol** | Empty blocks, нарушение ordering                          |
 
