@@ -30,8 +30,8 @@
 | Gas-related              | ~15% | indexed events, struct packing         |
 | Безопасность и апгрейд   | ~10% | inline assembly, visibility, timestamp |
 
-> Полный JSON-лог проверки: [audit/solhint.json](audit/solhint.json)
-> Текстовый вывод: [audit/solhint.txt](audit/solhint.txt)
+> Полный JSON-лог проверки: [audit/solhint.json](solhint.json)
+> Текстовый вывод: [audit/solhint.txt](solhint.txt)
 
 ---
 
@@ -58,7 +58,7 @@
 * **Всего находок:** 111
 * Значительная часть — в библиотеках OpenZeppelin и не требует исправлений.
 
-> Полный лог: [audit/slither.txt](audit/slither.txt)
+> Полный лог: [audit/slither.txt](slither.txt)
 
 ---
 
@@ -110,7 +110,7 @@
 * Добавлен NatSpec.
 * Приняты осознанные исключения (DOMAIN_SEPARATOR, inline assembly, struct packing).
 
-> Полный diff: [audit/contracts_patch.diff](audit/contracts_patch.diff)
+> Полный diff: [audit/contracts_patch.diff](contracts_patch.diff)
 
 ---
 
