@@ -2,7 +2,8 @@
 pragma solidity ^0.8.29;
 
 /**
- * @title IERC20Permit  
+ * @title IERC20Permit
+ * @author openzeppelin
  * @notice Интерфейс расширения Permit для токенов стандарта ERC20 * 
  */
 
@@ -31,11 +32,13 @@ interface IERC20Permit {
     /**
      * @notice функция возращает текущий nonce по транзакциям выдачи разрешений на адрес владельца
      * @param owner - адрес владельца
+     * @return uint256 нонс владельца
      */
     function nonces(address owner) external view returns (uint256);
     
     /**
      * @notice функция возращает уникальный идентификатор “домена” подписей в контракте
+     * @return bytes32 домен для шифрования
      */   
     function DOMAIN_SEPARATOR() external view returns (bytes32);
     

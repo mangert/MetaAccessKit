@@ -3,6 +3,7 @@ pragma solidity ^0.8.29;
 
 /**
  * @title IAccessControl
+ * @author openzeppelin
  * @notice интерфейс для ролевой системы в контракте ERC20
  */
 
@@ -52,12 +53,6 @@ interface IAccessControl {
     error UnauthorizedAccount(address account, bytes32 role);
     
     /**
-     * @notice функция возвращает админскую роль для заданной роли
-     * @param role - роль, для которой делаем запрос
-     */
-    function getRoleAdmin(bytes32 role) external view returns(bytes32);
-
-    /**
      * @notice функция выдает роль на адрес
      * @param role - выдаваемая роль
      * @param account - адрес, которому выдается роль
@@ -70,4 +65,12 @@ interface IAccessControl {
      * @param account - адрес, у которого отзывается роль
      */
     function revokeRole(bytes32 role, address account) external;     
+
+    /**
+     * @notice функция возвращает админскую роль для заданной роли
+     * @param role - роль, для которой делаем запрос
+     * @return bytes32 админская роль
+     */
+    function getRoleAdmin(bytes32 role) external view returns(bytes32);  
+    
 }

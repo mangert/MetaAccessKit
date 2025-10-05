@@ -5,18 +5,24 @@ pragma solidity ^0.8.29;
 import { Context } from "@openzeppelin/contracts/utils/Context.sol";
 
 /**
- * 
+ * @title  ERC2771Context
+ * @notice из библиотетки openzeppelin, включен для использования в ETHAccount2771
+ * @author @openzeppelin
  */
 abstract contract ERC2771Context is Context {    
     
+    // solhint-disable-next-line immutable-vars-naming
     address private immutable _trustedForwarder; //ссылка на контракт-форвардер
     
+    /// @notice конструктор устанавливает доверенного форвардера
+    /// @param trustedForwarder_ адрес форвардера
     constructor(address trustedForwarder_) {
         _trustedForwarder = trustedForwarder_;
     }
 
     /**
      * @notice функция возвращает адрес контракта-форвардера
+     * @return address доверенный форвардер
      */
     function trustedForwarder() public view virtual returns (address) {
         return _trustedForwarder;
@@ -24,7 +30,8 @@ abstract contract ERC2771Context is Context {
 
     /**
      * @notice Функция проверяет, является ли контракт зарегистрированным форвардером
-     * @param адрес контракта для проверки
+     * @param forwarder адрес контракта для проверки
+     * @return bool результат проверки
      */
     function isTrustedForwarder(address forwarder) public view virtual returns (bool) {
         return forwarder == trustedForwarder();
@@ -34,10 +41,12 @@ abstract contract ERC2771Context is Context {
      * @notice функция вытаскивает отправителя транзакции (перегрузка из Context)
      * если длина сообщения меньше длины адреса, или сообщение пришло не от зарегистрированного форвардера,
      * возвращается оригинальный msg.sender
+     * @return address отправитель транзакции
      */
     function _msgSender() internal view virtual override returns (address) {
         uint256 calldataLength = msg.data.length;
         uint256 contextSuffixLength = _contextSuffixLength();
+        // solhint-disable-next-line gas-strict-inequalities
         if (isTrustedForwarder(msg.sender) && calldataLength >= contextSuffixLength) { //если вызов пришел от forwarder
             return address(bytes20(msg.data[calldataLength - contextSuffixLength:])); //берем "хвост" от данных
         } else {
@@ -49,10 +58,12 @@ abstract contract ERC2771Context is Context {
      * @notice функция вытаскивает соодержание сообщения (перегрузка из Context)
      * если длина сообщения больше длины адреса и сообщение пришло от зарегистрированного форвардера,
      * отрезается "хвост" - 20 байт адреса отправителя транзакции, в противном случае возвращается сообщение целиком
+     * @return bytes содержание сообщения
      */
     function _msgData() internal view virtual override returns (bytes calldata) {
         uint256 calldataLength = msg.data.length;
         uint256 contextSuffixLength = _contextSuffixLength();
+        // solhint-disable-next-line gas-strict-inequalities
         if (isTrustedForwarder(msg.sender) && calldataLength >= contextSuffixLength) {
             return msg.data[:calldataLength - contextSuffixLength]; //берем данные без "Хвоста" - отрезаем msg.sender
         } else {
@@ -62,6 +73,7 @@ abstract contract ERC2771Context is Context {
 
     /**
      * @notice функция возвращает длину адреса отправителя (перегрузка из Context)
+     * @return uint256 длина суффикса контекста
      */
     function _contextSuffixLength() internal view virtual override returns (uint256) {
         return 20;

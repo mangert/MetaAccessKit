@@ -23,3 +23,8 @@ scripts/logs/deploy-log.txt
 scripts/logs/addresses.json
 scripts/verifyFactory.ts
 scripts/verifyUUPSV2.ts
+audit/audit.backup.md
+audit/audit_sample.md
+patch.diff
+
+

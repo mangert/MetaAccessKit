@@ -1,0 +1,358 @@
+INFO:Detectors:
+ETHAccountV2._withdrawInternal(address,uint256) (contracts/factory/ETHAccountV2.sol#72-82) sends eth to arbitrary user      
+        Dangerous calls:
+        - (success,None) = recipient.call{value: amount}() (contracts/factory/ETHAccountV2.sol#78)
+ETHAccountV1._withdrawInternal(address,uint256) (contracts/meta/ETHAccountV1.sol#64-74) sends eth to arbitrary user
+        Dangerous calls:
+        - (success,None) = recipient.call{value: amount}() (contracts/meta/ETHAccountV1.sol#70)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations
+INFO:Detectors:
+Math.mulDiv(uint256,uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#204-275) has bitwise-xor operator ^ instead of the exponentiation operator **: 
+         - inverse = (3 * denominator) ^ 2 (node_modules/@openzeppelin/contracts/utils/math/Math.sol#257)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-exponentiation
+INFO:Detectors:
+AccountBoxV1 (contracts/UUPS/AccountBoxV1.sol#16-82) is an upgradeable contract that does not protect its initialize functions: AccountBoxV1.initialize(address,address) (contracts/UUPS/AccountBoxV1.sol#38-42). Anyone can delete the contract with: UUPSUpgradeable.upgradeToAndCall(address,bytes) (node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol#92-95)AccountBoxV2 
+(contracts/UUPS/AccountBoxV2.sol#16-93) is an upgradeable contract that does not protect its initialize functions: AccountBoxV2.initialize(address,address) (contracts/UUPS/AccountBoxV2.sol#38-42). Anyone can delete the contract with: UUPSUpgradeable.upgradeToAndCall(address,bytes) (node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol#92-95)Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unprotected-upgradeable-contract
+INFO:Detectors:
+Math.mulDiv(uint256,uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#204-275) performs a multiplication on the result of a division:
+        - denominator = denominator / twos (node_modules/@openzeppelin/contracts/utils/math/Math.sol#242)
+        - inverse = (3 * denominator) ^ 2 (node_modules/@openzeppelin/contracts/utils/math/Math.sol#257)
+Math.mulDiv(uint256,uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#204-275) performs a multiplication on the result of a division:
+        - denominator = denominator / twos (node_modules/@openzeppelin/contracts/utils/math/Math.sol#242)
+        - inverse *= 2 - denominator * inverse (node_modules/@openzeppelin/contracts/utils/math/Math.sol#261)
+Math.mulDiv(uint256,uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#204-275) performs a multiplication on the result of a division:
+        - denominator = denominator / twos (node_modules/@openzeppelin/contracts/utils/math/Math.sol#242)
+        - inverse *= 2 - denominator * inverse (node_modules/@openzeppelin/contracts/utils/math/Math.sol#262)
+Math.mulDiv(uint256,uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#204-275) performs a multiplication on the result of a division:
+        - denominator = denominator / twos (node_modules/@openzeppelin/contracts/utils/math/Math.sol#242)
+        - inverse *= 2 - denominator * inverse (node_modules/@openzeppelin/contracts/utils/math/Math.sol#263)
+Math.mulDiv(uint256,uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#204-275) performs a multiplication on the result of a division:
+        - denominator = denominator / twos (node_modules/@openzeppelin/contracts/utils/math/Math.sol#242)
+        - inverse *= 2 - denominator * inverse (node_modules/@openzeppelin/contracts/utils/math/Math.sol#264)
+Math.mulDiv(uint256,uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#204-275) performs a multiplication on the result of a division:
+        - denominator = denominator / twos (node_modules/@openzeppelin/contracts/utils/math/Math.sol#242)
+        - inverse *= 2 - denominator * inverse (node_modules/@openzeppelin/contracts/utils/math/Math.sol#265)
+Math.mulDiv(uint256,uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#204-275) performs a multiplication on the result of a division:
+        - denominator = denominator / twos (node_modules/@openzeppelin/contracts/utils/math/Math.sol#242)
+        - inverse *= 2 - denominator * inverse (node_modules/@openzeppelin/contracts/utils/math/Math.sol#266)
+Math.mulDiv(uint256,uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#204-275) performs a multiplication on the result of a division:
+        - low = low / twos (node_modules/@openzeppelin/contracts/utils/math/Math.sol#245)
+        - result = low * inverse (node_modules/@openzeppelin/contracts/utils/math/Math.sol#272)
+Math.invMod(uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#315-361) performs a multiplication on the result of a division:
+        - quotient = gcd / remainder (node_modules/@openzeppelin/contracts/utils/math/Math.sol#337)
+        - (gcd,remainder) = (remainder,gcd - remainder * quotient) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#339-346)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+INFO:Detectors:
+ERC2771Forwarder.executeBatch(ERC2771Forwarder.ForwardRequestData[],address).requestsValue (contracts/meta/ERC2771Forwarder.sol#109) is a local variable never initialized
+ERC2771Forwarder.executeBatch(ERC2771Forwarder.ForwardRequestData[],address).refundValue (contracts/meta/ERC2771Forwarder.sol#110) is a local variable never initialized
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-local-variables
+INFO:Detectors:
+ERC1967Utils.upgradeToAndCall(address,bytes) (node_modules/@openzeppelin/contracts/proxy/ERC1967/ERC1967Utils.sol#67-76) ignores return value by Address.functionDelegateCall(newImplementation,data) 
+(node_modules/@openzeppelin/contracts/proxy/ERC1967/ERC1967Utils.sol#72)
+ERC1967Utils.upgradeBeaconToAndCall(address,bytes) (node_modules/@openzeppelin/contracts/proxy/ERC1967/ERC1967Utils.sol#157-166) ignores return value by Address.functionDelegateCall(IBeacon(newBeacon).implementation(),data) (node_modules/@openzeppelin/contracts/proxy/ERC1967/ERC1967Utils.sol#162)
+ERC2771Forwarder._recoverForwardRequestSigner(ERC2771Forwarder.ForwardRequestData) (contracts/meta/ERC2771Forwarder.sol#159-178) ignores return value by (recovered,err,None) = _hashTypedDataV4(keccak256(bytes)(abi.encode(_FORWARD_REQUEST_TYPEHASH,request.from,request.to,request.value,request.gas,nonces(request.from),request.deadline,keccak256(bytes)(request.data)))).tryRecover(request.signature) (contracts/meta/ERC2771Forwarder.sol#162-175)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+INFO:Detectors:
+AccountBoxV1.getAccountByIndex(address,uint8).owner (contracts/UUPS/AccountBoxV1.sol#66) shadows:
+        - OwnableUpgradeable.owner() (node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol#73-76) (function)
+AccountBoxV2.getAccountByIndex(address,uint8).owner (contracts/UUPS/AccountBoxV2.sol#66) shadows:
+        - OwnableUpgradeable.owner() (node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol#73-76) (function)
+AccountBoxV2.getAccountById(address,bytes4).owner (contracts/UUPS/AccountBoxV2.sol#77) shadows:
+        - OwnableUpgradeable.owner() (node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol#73-76) (function)
+ERC20Permit.constructor(string).name (contracts/erc20/ERC20Permit.sol#31) shadows:
+        - ERC20.name() (node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol#52-54) (function)
+        - IERC20Metadata.name() (node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol#15) (function)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#local-variable-shadowing
+INFO:Detectors:
+AccountBoxV1.initialize(address,address).trustedForwarder (contracts/UUPS/AccountBoxV1.sol#38) lacks a zero-check on :
+                - implementation = address(new ETHAccountV2(trustedForwarder)) (contracts/UUPS/AccountBoxV1.sol#39)
+AccountBoxV2.initialize(address,address).trustedForwarder (contracts/UUPS/AccountBoxV2.sol#38) lacks a zero-check on :
+                - implementation = address(new ETHAccountV2(trustedForwarder)) (contracts/UUPS/AccountBoxV2.sol#39)
+AccountBox.constructor(address).trustedForwarder (contracts/factory/AccountBox.sol#29) lacks a zero-check on :
+                - implementation = address(new ETHAccountV2(trustedForwarder)) (contracts/factory/AccountBox.sol#30)
+ETHAccountV2.initialize(uint8,address)._owner (contracts/factory/ETHAccountV2.sol#28) lacks a zero-check on :
+                - owner = _owner (contracts/factory/ETHAccountV2.sol#34)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+INFO:Detectors:
+Reentrancy in AccountBoxV1.createClone() (contracts/UUPS/AccountBoxV1.sol#47-59):
+        External calls:
+        - ETHAccountV2(clone).initialize(userCounters[msg.sender] ++,msg.sender) (contracts/UUPS/AccountBoxV1.sol#51)
+        State variables written after the call(s):
+        - accounts[msg.sender][accountId] = clone (contracts/UUPS/AccountBoxV1.sol#54)
+Reentrancy in AccountBoxV2.createClone() (contracts/UUPS/AccountBoxV2.sol#47-59):
+        External calls:
+        - ETHAccountV2(clone).initialize(userCounters[msg.sender] ++,msg.sender) (contracts/UUPS/AccountBoxV2.sol#51)
+        State variables written after the call(s):
+        - accounts[msg.sender][accountId] = clone (contracts/UUPS/AccountBoxV2.sol#54)
+Reentrancy in AccountBox.createClone() (contracts/factory/AccountBox.sol#36-48):
+        External calls:
+        - ETHAccountV2(clone).initialize(userCounters[msg.sender] ++,msg.sender) (contracts/factory/AccountBox.sol#40)
+        State variables written after the call(s):
+        - accounts[msg.sender][accountId] = clone (contracts/factory/AccountBox.sol#43)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+INFO:Detectors:
+Reentrancy in ETHAccountV2._withdrawInternal(address,uint256) (contracts/factory/ETHAccountV2.sol#72-82):
+        External calls:
+        - (success,None) = recipient.call{value: amount}() (contracts/factory/ETHAccountV2.sol#78)
+        Event emitted after the call(s):
+        - Withdrawed(recipient,amount) (contracts/factory/ETHAccountV2.sol#81)
+Reentrancy in ETHAccountV1._withdrawInternal(address,uint256) (contracts/meta/ETHAccountV1.sol#64-74):
+        External calls:
+        - (success,None) = recipient.call{value: amount}() (contracts/meta/ETHAccountV1.sol#70)
+        Event emitted after the call(s):
+        - Withdrawed(recipient,amount) (contracts/meta/ETHAccountV1.sol#73)
+Reentrancy in AccountBoxV1.createClone() (contracts/UUPS/AccountBoxV1.sol#47-59):
+        External calls:
+        - ETHAccountV2(clone).initialize(userCounters[msg.sender] ++,msg.sender) (contracts/UUPS/AccountBoxV1.sol#51)
+        Event emitted after the call(s):
+        - AccountCreated(msg.sender,accountId,clone) (contracts/UUPS/AccountBoxV1.sol#56)
+Reentrancy in AccountBoxV2.createClone() (contracts/UUPS/AccountBoxV2.sol#47-59):
+        External calls:
+        - ETHAccountV2(clone).initialize(userCounters[msg.sender] ++,msg.sender) (contracts/UUPS/AccountBoxV2.sol#51)
+        Event emitted after the call(s):
+        - AccountCreated(msg.sender,accountId,clone) (contracts/UUPS/AccountBoxV2.sol#56)
+Reentrancy in AccountBox.createClone() (contracts/factory/AccountBox.sol#36-48):
+        External calls:
+        - ETHAccountV2(clone).initialize(userCounters[msg.sender] ++,msg.sender) (contracts/factory/AccountBox.sol#40)
+        Event emitted after the call(s):
+        - AccountCreated(msg.sender,accountId,clone) (contracts/factory/AccountBox.sol#45)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+INFO:Detectors:
+ERC20Permit.permit(address,address,uint256,uint256,uint8,bytes32,bytes32) (contracts/erc20/ERC20Permit.sol#34-64) uses timestamp for comparisons
+        Dangerous comparisons:
+        - require(bool,error)(block.timestamp <= deadline,revert ERC2612ExpiredSignature(uint256)(deadline)) (contracts/erc20/ERC20Permit.sol#43)
+ERC2771Forwarder.verify(ERC2771Forwarder.ForwardRequestData) (contracts/meta/ERC2771Forwarder.sol#78-81) uses timestamp for comparisons
+        Dangerous comparisons:
+        - isTrustedForwarder && active && signerMatch (contracts/meta/ERC2771Forwarder.sol#80)
+ERC2771Forwarder._validate(ERC2771Forwarder.ForwardRequestData) (contracts/meta/ERC2771Forwarder.sol#142-153) uses timestamp for comparisons
+        Dangerous comparisons:
+        - (_isTrustedByTarget(request.to),request.deadline >= block.timestamp,isValid && recovered == request.from,recovered) (contracts/meta/ERC2771Forwarder.sol#147-152)
+ERC2771Forwarder._execute(ERC2771Forwarder.ForwardRequestData,bool) (contracts/meta/ERC2771Forwarder.sol#185-226) uses timestamp for comparisons
+        Dangerous comparisons:
+        - isTrustedForwarder && signerMatch && active (contracts/meta/ERC2771Forwarder.sol#206)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+INFO:Detectors:
+OwnableUpgradeable._getOwnableStorage() (node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol#30-34) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol#31-33)
+Initializable._getInitializableStorage() (node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol#232-237) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol#234-236)
+Clones.clone(address,uint256) (node_modules/@openzeppelin/contracts/proxy/Clones.sol#39-54) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/proxy/Clones.sol#43-50)
+Clones.cloneDeterministic(address,bytes32,uint256) (node_modules/@openzeppelin/contracts/proxy/Clones.sol#74-93) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/proxy/Clones.sol#82-89)
+Clones.predictDeterministicAddress(address,bytes32,address) (node_modules/@openzeppelin/contracts/proxy/Clones.sol#98-113) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/proxy/Clones.sol#103-112)
+Clones.cloneWithImmutableArgs(address,bytes,uint256) (node_modules/@openzeppelin/contracts/proxy/Clones.sol#143-158) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/proxy/Clones.sol#152-154)
+Clones.fetchCloneArgs(address) (node_modules/@openzeppelin/contracts/proxy/Clones.sol#229-235) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/proxy/Clones.sol#231-233)
+Address._revert(bytes) (node_modules/@openzeppelin/contracts/utils/Address.sol#138-149) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/Address.sol#142-145)
+Create2.deploy(uint256,bytes32,bytes) (node_modules/@openzeppelin/contracts/utils/Create2.sol#37-56) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/Create2.sol#44-52)
+Create2.computeAddress(bytes32,bytes32,address) (node_modules/@openzeppelin/contracts/utils/Create2.sol#70-91) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/Create2.sol#71-90)
+Panic.panic(uint256) (node_modules/@openzeppelin/contracts/utils/Panic.sol#50-56) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/Panic.sol#51-55)
+ShortStrings.toString(ShortString) (node_modules/@openzeppelin/contracts/utils/ShortStrings.sol#63-72) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/ShortStrings.sol#67-70)
+StorageSlot.getAddressSlot(bytes32) (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#66-70) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#67-69)
+StorageSlot.getBooleanSlot(bytes32) (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#75-79) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#76-78)
+StorageSlot.getBytes32Slot(bytes32) (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#84-88) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#85-87)
+StorageSlot.getUint256Slot(bytes32) (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#93-97) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#94-96)
+StorageSlot.getInt256Slot(bytes32) (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#102-106) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#103-105)
+StorageSlot.getStringSlot(bytes32) (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#111-115) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#112-114)
+StorageSlot.getStringSlot(string) (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#120-124) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#121-123)
+StorageSlot.getBytesSlot(bytes32) (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#129-133) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#130-132)
+StorageSlot.getBytesSlot(bytes) (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#138-142) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#139-141)
+Strings.toString(uint256) (node_modules/@openzeppelin/contracts/utils/Strings.sol#45-63) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/Strings.sol#50-52)
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/Strings.sol#55-57)
+Strings.toChecksumHexString(address) (node_modules/@openzeppelin/contracts/utils/Strings.sol#111-129) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/Strings.sol#116-118)
+Strings.escapeJSON(string) (node_modules/@openzeppelin/contracts/utils/Strings.sol#446-476) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/Strings.sol#470-473)
+Strings._unsafeReadBytesOffset(bytes,uint256) (node_modules/@openzeppelin/contracts/utils/Strings.sol#484-489) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/Strings.sol#486-488)
+ECDSA.tryRecover(bytes32,bytes) (node_modules/@openzeppelin/contracts/utils/cryptography/ECDSA.sol#56-75) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/cryptography/ECDSA.sol#66-70)
+MessageHashUtils.toEthSignedMessageHash(bytes32) (node_modules/@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol#30-36) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol#31-35)
+MessageHashUtils.toDataWithIntendedValidatorHash(address,bytes32) (node_modules/@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol#69-79) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol#73-78)
+MessageHashUtils.toTypedDataHash(bytes32,bytes32) (node_modules/@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol#90-98) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol#91-97)
+Math.add512(uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#25-30) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/math/Math.sol#26-29)
+Math.mul512(uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#37-46) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/math/Math.sol#41-45)
+Math.tryMul(uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#73-84) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/math/Math.sol#76-80)
+Math.tryDiv(uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#89-97) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/math/Math.sol#92-95)
+Math.tryMod(uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#102-110) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/math/Math.sol#105-108)
+Math.mulDiv(uint256,uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#204-275) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/math/Math.sol#227-234)
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/math/Math.sol#240-249)
+Math.tryModExp(uint256,uint256,uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#409-433) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/math/Math.sol#411-432)
+Math.tryModExp(bytes,bytes,bytes) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#449-471) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/math/Math.sol#461-470)
+Math.log2(uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#612-651) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/math/Math.sol#648-650)
+SafeCast.toUint(bool) (node_modules/@openzeppelin/contracts/utils/math/SafeCast.sol#1157-1161) uses assembly
+        - INLINE ASM (node_modules/@openzeppelin/contracts/utils/math/SafeCast.sol#1158-1160)
+ERC2771Forwarder._execute(ERC2771Forwarder.ForwardRequestData,bool) (contracts/meta/ERC2771Forwarder.sol#185-226) uses assembly
+        - INLINE ASM (contracts/meta/ERC2771Forwarder.sol#217-220)
+ERC2771Forwarder._isTrustedByTarget(address) (contracts/meta/ERC2771Forwarder.sol#232-245) uses assembly
+        - INLINE ASM (contracts/meta/ERC2771Forwarder.sol#238-242)
+ERC2771Forwarder._checkForwardedGas(uint256,ERC2771Forwarder.ForwardRequestData) (contracts/meta/ERC2771Forwarder.sol#254-262) uses assembly
+        - INLINE ASM (contracts/meta/ERC2771Forwarder.sol#258-260)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage
+INFO:Detectors:
+3 different versions of Solidity are used:
+        - Version constraint ^0.8.20 is used by:
+                -^0.8.20 (node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/interfaces/IERC1967.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/interfaces/IERC5267.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/interfaces/draft-IERC1822.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/interfaces/draft-IERC6093.sol#3)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/proxy/Clones.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/proxy/beacon/IBeacon.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/Address.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/Context.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/Create2.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/Errors.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/Nonces.sol#3)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/Panic.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/ShortStrings.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#5)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/Strings.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/cryptography/ECDSA.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/cryptography/EIP712.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/math/Math.sol#4)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/math/SafeCast.sol#5)
+                -^0.8.20 (node_modules/@openzeppelin/contracts/utils/math/SignedMath.sol#4)
+        - Version constraint ^0.8.22 is used by:
+                -^0.8.22 (node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol#4)
+                -^0.8.22 (node_modules/@openzeppelin/contracts/proxy/ERC1967/ERC1967Utils.sol#4)
+        - Version constraint ^0.8.29 is used by:
+                -^0.8.29 (contracts/UUPS/AccountBoxV1.sol#2)
+                -^0.8.29 (contracts/UUPS/AccountBoxV2.sol#2)
+                -^0.8.29 (contracts/commonInterfaces/IETHAccount.sol#2)
+                -^0.8.29 (contracts/erc20/AccessControl.sol#2)
+                -^0.8.29 (contracts/erc20/AmetistToken.sol#3)
+                -^0.8.29 (contracts/erc20/ERC20Permit.sol#2)
+                -^0.8.29 (contracts/erc20/IAccessControl.sol#2)
+                -^0.8.29 (contracts/erc20/IERC20Permit.sol#2)
+                -^0.8.29 (contracts/factory/AccountBox.sol#2)
+                -^0.8.29 (contracts/factory/ETHAccountV2.sol#2)
+                -^0.8.29 (contracts/libs/IDGenerator.sol#2)
+                -^0.8.29 (contracts/meta/ERC2771Context.sol#3)
+                -^0.8.29 (contracts/meta/ERC2771Forwarder.sol#3)
+                -^0.8.29 (contracts/meta/ETHAccountV1.sol#2)
+                -^0.8.29 (contracts/test-helpers/ERC20Proxy.sol#3)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#different-pragma-directives-are-used
+INFO:Detectors:
+ERC2771Context._msgData() (contracts/meta/ERC2771Context.sol#53-61) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+INFO:Detectors:
+Version constraint ^0.8.20 contains known severe issues (https://solidity.readthedocs.io/en/latest/bugs.html)
+        - VerbatimInvalidDeduplication
+        - FullInlinerNonExpressionSplitArgumentEvaluationOrder
+        - MissingSideEffectsOnSelectorAccess.
+It is used by:
+        - ^0.8.20 (node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/interfaces/IERC1967.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/interfaces/IERC5267.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/interfaces/draft-IERC1822.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/interfaces/draft-IERC6093.sol#3)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/proxy/Clones.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/proxy/beacon/IBeacon.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/Address.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/Context.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/Create2.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/Errors.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/Nonces.sol#3)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/Panic.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/ShortStrings.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/StorageSlot.sol#5)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/Strings.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/cryptography/ECDSA.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/cryptography/EIP712.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/math/Math.sol#4)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/math/SafeCast.sol#5)
+        - ^0.8.20 (node_modules/@openzeppelin/contracts/utils/math/SignedMath.sol#4)
+Version constraint ^0.8.22 contains known severe issues (https://solidity.readthedocs.io/en/latest/bugs.html)
+        - VerbatimInvalidDeduplication.
+It is used by:
+        - ^0.8.22 (node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol#4)
+        - ^0.8.22 (node_modules/@openzeppelin/contracts/proxy/ERC1967/ERC1967Utils.sol#4)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+INFO:Detectors:
+Low level call in Address.sendValue(address,uint256) (node_modules/@openzeppelin/contracts/utils/Address.sol#33-42):
+        - (success,returndata) = recipient.call{value: amount}() (node_modules/@openzeppelin/contracts/utils/Address.sol#38)
+Low level call in Address.functionCallWithValue(address,bytes,uint256) (node_modules/@openzeppelin/contracts/utils/Address.sol#75-81):
+        - (success,returndata) = target.call{value: value}(data) (node_modules/@openzeppelin/contracts/utils/Address.sol#79)
+Low level call in Address.functionStaticCall(address,bytes) (node_modules/@openzeppelin/contracts/utils/Address.sol#87-90):
+        - (success,returndata) = target.staticcall(data) (node_modules/@openzeppelin/contracts/utils/Address.sol#88)
+Low level call in Address.functionDelegateCall(address,bytes) (node_modules/@openzeppelin/contracts/utils/Address.sol#96-99):
+        - (success,returndata) = target.delegatecall(data) (node_modules/@openzeppelin/contracts/utils/Address.sol#97)
+Low level call in ETHAccountV2._withdrawInternal(address,uint256) (contracts/factory/ETHAccountV2.sol#72-82):
+        - (success,None) = recipient.call{value: amount}() (contracts/factory/ETHAccountV2.sol#78)
+Low level call in ETHAccountV1._withdrawInternal(address,uint256) (contracts/meta/ETHAccountV1.sol#64-74):
+        - (success,None) = recipient.call{value: amount}() (contracts/meta/ETHAccountV1.sol#70)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+INFO:Detectors:
+Function OwnableUpgradeable.__Ownable_init(address) (node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol#51-53) is not in mixedCase
+Function OwnableUpgradeable.__Ownable_init_unchained(address) (node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol#55-60) is not in mixedCase
+Constant OwnableUpgradeable.OwnableStorageLocation (node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol#28) is not in UPPER_CASE_WITH_UNDERSCORES
+Function UUPSUpgradeable.__UUPSUpgradeable_init() (node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol#65-66) is not in mixedCase
+Function UUPSUpgradeable.__UUPSUpgradeable_init_unchained() (node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol#68-69) is not in mixedCase
+Variable UUPSUpgradeable.__self (node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol#22) is not in mixedCase
+Function ContextUpgradeable.__Context_init() (node_modules/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol#18-19) is not in mixedCase
+Function ContextUpgradeable.__Context_init_unchained() (node_modules/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol#21-22) is not in mixedCase
+Function EIP712._EIP712Name() (node_modules/@openzeppelin/contracts/utils/cryptography/EIP712.sol#148-150) is not in mixedCase
+Function EIP712._EIP712Version() (node_modules/@openzeppelin/contracts/utils/cryptography/EIP712.sol#159-161) is not in mixedCase
+Parameter AccountBoxV2.getAccountById(address,bytes4)._id (contracts/UUPS/AccountBoxV2.sol#77) is not in mixedCase
+Function ERC20Permit.DOMAIN_SEPARATOR() (contracts/erc20/ERC20Permit.sol#78-80) is not in mixedCase
+Function IERC20Permit.DOMAIN_SEPARATOR() (contracts/erc20/IERC20Permit.sol#40) is not in mixedCase
+Parameter ETHAccountV2.initialize(uint8,address)._id (contracts/factory/ETHAccountV2.sol#28) is not in mixedCase
+Parameter ETHAccountV2.initialize(uint8,address)._owner (contracts/factory/ETHAccountV2.sol#28) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+INFO:Detectors:
+Clones.clone(address,uint256) (node_modules/@openzeppelin/contracts/proxy/Clones.sol#39-54) uses literals with too many digits:
+        - mstore(uint256,uint256)(0x00,implementation << 0x60 >> 0xe8 | 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000) (node_modules/@openzeppelin/contracts/proxy/Clones.sol#46)
+Clones.cloneDeterministic(address,bytes32,uint256) (node_modules/@openzeppelin/contracts/proxy/Clones.sol#74-93) uses literals with too many digits:
+        - mstore(uint256,uint256)(0x00,implementation << 0x60 >> 0xe8 | 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000) (node_modules/@openzeppelin/contracts/proxy/Clones.sol#85)
+ShortStrings.slitherConstructorConstantVariables() (node_modules/@openzeppelin/contracts/utils/ShortStrings.sol#40-122) uses literals with too many digits:
+        - FALLBACK_SENTINEL = 0x00000000000000000000000000000000000000000000000000000000000000FF (node_modules/@openzeppelin/contracts/utils/ShortStrings.sol#42)
+Math.log2(uint256) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#612-651) uses literals with too many digits:
+        - r = r | byte(uint256,uint256)(x >> r,0x0000010102020202030303030303030300000000000000000000000000000000) (node_modules/@openzeppelin/contracts/utils/math/Math.sol#649)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+INFO:Detectors:
+ETHAccountV1.owner (contracts/meta/ETHAccountV1.sol#17) should be immutable
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-immutable
+INFO:Slither:. analyzed (46 contracts with 100 detectors), 111 result(s) found

@@ -1,0 +1,1363 @@
+diff --git a/contracts/UUPS/AccountBoxV1.sol b/contracts/UUPS/AccountBoxV1.sol
+index 2fcad02..9481a2d 100644
+--- a/contracts/UUPS/AccountBoxV1.sol
++++ b/contracts/UUPS/AccountBoxV1.sol
+@@ -2,24 +2,30 @@
+ pragma solidity ^0.8.29;
+ 
+ import { ETHAccountV2 } from "../factory/ETHAccountV2.sol";
+-import "@openzeppelin/contracts/proxy/Clones.sol";
+-import "../libs/IDGenerator.sol";
++import { Clones } from "@openzeppelin/contracts/proxy/Clones.sol";
++import { IDGenerator } from "../libs/IDGenerator.sol";
+ import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+ import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+ import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
++import { ReentrancyGuardUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+ 
+ /**
+- * @title AccountBoxV1  
++ * @title AccountBoxV1
++ * @author mangert
+  * @notice Контракт-фабрика в обновляемой редакции (паттерн UUPSUpgradeable)
+  * первая редакция реализации
+  */
+-contract AccountBoxV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable{
+-    
++contract AccountBoxV1 is 
++    Initializable, 
++    UUPSUpgradeable, 
++    OwnableUpgradeable, 
++    ReentrancyGuardUpgradeable {
++    ///@notice ссылка на контракт-шаблон
+     address public implementation; //ссылка на контракт-шаблон
+     
+     //хранилище созданных счетов
+     mapping (address client => mapping (bytes4 id => address account)) private accounts;    
+-    //счетчики для адресов
++    ///@notice счетчики для адресов
+     mapping(address => uint8) public userCounters;
+ 
+     /**
+@@ -28,10 +34,20 @@ contract AccountBoxV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable{
+      * @param id - идентификатор 
+      * @param account - адрес созданного счета
+      */
+-    event AccountCreated(address indexed owner, bytes4 indexed id, address account);    
++    event AccountCreated(address indexed owner, bytes4 indexed id, address indexed account);    
++
++    /// @custom:oz-upgrades-unsafe-allow constructor
++    /// @notice Блокирующий конструктор для предоствращения вызова функции инициализации напрямую из имплементации
++    constructor() {
++        _disableInitializers();
++    }
+     
++    // solhint-disable ordering
++    //solhint-disable comprehensive-interface
+     /**
+      * @notice - функция инициализации - вместо конструктора
++     * @dev Оставлена вверху контракта для лучшей читаемости,
++     * несмотря на предупреждение линтера об "ordering".
+      * @param trustedForwarder - адрес форвардера
+      * @param initialOwner - адрес владельца
+      */
+@@ -39,16 +55,21 @@ contract AccountBoxV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable{
+         implementation = address(new ETHAccountV2(trustedForwarder));
+         __Ownable_init(initialOwner);
+         __UUPSUpgradeable_init();
+-    }      
++        __ReentrancyGuard_init();
++    }
+     
++
+     /**
+      * @notice функция создает новый минимальный прокси для шаблонного контракта-счета
++     * @return address возвращает адрес созданного прокси-контракта
+      */
+-    function createClone() external returns (address) {
++    function createClone() external nonReentrant returns (address) {
+         
+         address payable clone = payable (Clones.clone(implementation)); //создаем клон
+ 
+-        ETHAccountV2(clone).initialize(userCounters[msg.sender]++, msg.sender); //инициализируем и увеличиваем для пользователя счетчик
++        //инициализируем и увеличиваем для пользователя счетчик
++        // solhint-disable-next-line gas-increment-by-one
++        ETHAccountV2(clone).initialize(userCounters[msg.sender]++, msg.sender); 
+         
+         bytes4 accountId = ETHAccountV2(clone).accountID(); //получаем ID
+         accounts[msg.sender][accountId] = clone; //записываем в хранилище
+@@ -57,11 +78,13 @@ contract AccountBoxV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable{
+         
+         return clone;
+     }
+-
++    // solhint-enable ordering    
++    
+     /**
+      * @notice функция возращает адрес прокси-аккаунта исходя из адреса владельца и его индекса создания
+      * @param owner - адрес владельца для поиска
+      * @param index - индекс (по порядку создания)
++     * @return address возращает адрес прокси-аккаунта по локальному индексу владельца
+      */
+     function getAccountByIndex(address owner, uint8 index) public view returns (address) {
+         bytes4 id = IDGenerator.computeId(owner, index);
+@@ -77,5 +100,6 @@ contract AccountBoxV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable{
+         internal
+         override
+         onlyOwner
++        // solhint-disable-next-line no-empty-blocks
+     {}
+ }
+\ No newline at end of file
+diff --git a/contracts/UUPS/AccountBoxV2.sol b/contracts/UUPS/AccountBoxV2.sol
+index dcb9cfe..d02f04b 100644
+--- a/contracts/UUPS/AccountBoxV2.sol
++++ b/contracts/UUPS/AccountBoxV2.sol
+@@ -2,24 +2,30 @@
+ pragma solidity ^0.8.29;
+ 
+ import { ETHAccountV2 } from "../factory/ETHAccountV2.sol";
+-import "@openzeppelin/contracts/proxy/Clones.sol";
+-import "../libs/IDGenerator.sol";
++import { Clones } from "@openzeppelin/contracts/proxy/Clones.sol";
++import { IDGenerator } from "../libs/IDGenerator.sol";
+ import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+ import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+ import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
++import { ReentrancyGuardUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+ 
+ /**
+- * @title AccountBoxV2  
++ * @title AccountBoxV2 
++ * @author mangert
+  * @notice Контракт-фабрика в обновляемой редакции (паттерн UUPSUpgradeable)
+  * вторая редакция реализации - добавлен общий счетчик созданных аккаунтов и функция-геттер
+  */
+-contract AccountBoxV2 is Initializable, UUPSUpgradeable, OwnableUpgradeable{
+-    
+-    address public implementation; //ссылка на контракт-шаблон
++contract AccountBoxV2 is 
++    Initializable, 
++    UUPSUpgradeable, 
++    OwnableUpgradeable, 
++    ReentrancyGuardUpgradeable {
++    ///@notice ссылка на контракт-шаблон
++    address public implementation;
+     
+     //хранилище созданных счетов
+     mapping (address client => mapping (bytes4 id => address account)) private accounts;    
+-    //счетчики для адресов
++    ///@notice счетчики для адресов
+     mapping(address => uint8) public userCounters;    
+ 
+     /**
+@@ -28,27 +34,40 @@ contract AccountBoxV2 is Initializable, UUPSUpgradeable, OwnableUpgradeable{
+      * @param id - идентификатор 
+      * @param account - адрес созданного счета
+      */
+-    event AccountCreated(address indexed owner, bytes4 indexed id, address account);    
+-    
++    event AccountCreated(address indexed owner, bytes4 indexed id, address indexed account);       
++
++    /// @custom:oz-upgrades-unsafe-allow constructor
++    /// @notice Блокирующий конструктор для предоствращения вызова функции инициализации напрямую из имплементации
++    constructor() {
++        _disableInitializers();
++    }
++    //solhint-disable comprehensive-interface
++    // solhint-disable ordering
+     /**
+      * @notice - функция инициализации - вместо конструктора
+-     * @param trustedForwarder -
+-     * @param initialOwner -
++     * @dev Оставлена вверху контракта для лучшей читаемости,
++     * несмотря на предупреждение линтера об "ordering".
++     * @param trustedForwarder - адрес доверенного форвардера
++     * @param initialOwner - адрес владельца
+      */
+     function initialize(address trustedForwarder, address initialOwner) public initializer {
+         implementation = address(new ETHAccountV2(trustedForwarder));
+         __Ownable_init(initialOwner);
+         __UUPSUpgradeable_init();
++        __ReentrancyGuard_init();
+     }      
+     
+     /**
+      * @notice функция создает новый минимальный прокси для шаблонного контракта-счета
++     * @return address возвращает адрес созданного прокси-контракта
+      */
+-    function createClone() external returns (address) {
++    function createClone() external nonReentrant returns (address) {
+         
+         address payable clone = payable (Clones.clone(implementation)); //создаем клон
+ 
+-        ETHAccountV2(clone).initialize(userCounters[msg.sender]++, msg.sender); //инициализируем и увеличиваем для пользователя счетчик
++        //инициализируем и увеличиваем для пользователя счетчик
++        // solhint-disable-next-line gas-increment-by-one
++        ETHAccountV2(clone).initialize(userCounters[msg.sender]++, msg.sender); 
+         
+         bytes4 accountId = ETHAccountV2(clone).accountID(); //получаем ID
+         accounts[msg.sender][accountId] = clone; //записываем в хранилище        
+@@ -57,11 +76,13 @@ contract AccountBoxV2 is Initializable, UUPSUpgradeable, OwnableUpgradeable{
+         
+         return clone;
+     }
++    // solhint-enable ordering
+ 
+     /**
+      * @notice функция возращает адрес прокси-аккаунта исходя из адреса владельца и его индекса создания
+      * @param owner - адрес владельца для поиска
+      * @param index - индекс (по порядку создания)
++     * @return address возращает адрес прокси-аккаунта по локальному индексу владельца
+      */
+     function getAccountByIndex(address owner, uint8 index) public view returns (address) {
+         bytes4 id = IDGenerator.computeId(owner, index);
+@@ -73,6 +94,7 @@ contract AccountBoxV2 is Initializable, UUPSUpgradeable, OwnableUpgradeable{
+      * добавлена во второй реализации для демонстрации "обновляемости"
+      * @param owner - адрес владельца для поиска
+      * @param _id - индекс (по порядку создания)
++     * @return address адрес  прокси-аккуанта по локальному id владельца
+      */
+     function getAccountById(address owner, bytes4 _id) public view returns (address) {
+         
+@@ -88,5 +110,6 @@ contract AccountBoxV2 is Initializable, UUPSUpgradeable, OwnableUpgradeable{
+         internal
+         override
+         onlyOwner
++        // solhint-disable-next-line no-empty-blocks
+     {}
+ }
+\ No newline at end of file
+diff --git a/contracts/commonInterfaces/IETHAccount.sol b/contracts/commonInterfaces/IETHAccount.sol
+index 735ae3a..ffc9e83 100644
+--- a/contracts/commonInterfaces/IETHAccount.sol
++++ b/contracts/commonInterfaces/IETHAccount.sol
+@@ -4,23 +4,25 @@ pragma solidity ^0.8.29;
+ /**
+  * @title IETHAccount
+  * @notice интерфейс простого контракта-счета для демонстрации мета-транзаций и фабрики контрактов
++ * @author mangert
+  */
+ 
+ interface IETHAccount {
+ 
+-    /**
+-     * @notice событие сообщает о поступлении средств
+-     * @param depositor - адрес, с которого поступили средства
+-     * @param amount - сумма поступления
+-     */
+-    event Deposited(address indexed depositor, uint256 amount);
+-
++    // solhint-disable gas-indexed-events    
++    /// @notice событие сообщает о поступлении средств
++    /// @param depositor - адрес, с которого поступили средства
++    /// @param amount - сумма поступления        
++    event Deposited(address indexed depositor, uint256 amount); 
++    
+     /**
+      * @notice событие сообщает об успешном выводе     * 
+      * @param recipient - адрес вывода
+      * @param amount - сумма вывода
+-     */
++     */    
+     event Withdrawed(address indexed recipient, uint256 amount);
++
++    // solhint-enable gas-indexed-events
+     
+     /**
+      * @notice ошибка индицирует нехватку средств на балансе для вывода
+@@ -34,6 +36,11 @@ interface IETHAccount {
+      * @notice ошибка индицирует неудачную операцию вывода
+      */
+     error WitdrawFailed(address recipient, uint256 amount);
++    /**
++    * @notice ошибка попытку вывода на нулевой адрес
++    */
++    error ZeroAddressProvided();
++
+ 
+     /**
+      * @notice функция принимает вклад на контракт
+diff --git a/contracts/erc20/AccessControl.sol b/contracts/erc20/AccessControl.sol
+index 8768bf5..ef3dd80 100644
+--- a/contracts/erc20/AccessControl.sol
++++ b/contracts/erc20/AccessControl.sol
+@@ -3,18 +3,24 @@ pragma solidity ^0.8.29;
+ 
+ import { IAccessControl } from "./IAccessControl.sol";
+ 
++/**
++ * @title AccessControl
++ * @notice абстрактный контракт для ролевой системы в контракте ERC20
++ * @author mangert
++ */
+ abstract contract AccessControl is IAccessControl {
+-    
+-    //структура для хранения информации о ролях
++
++    ///@notice структура для хранения информации о ролях
+     struct RoleData {
+         mapping (address => bool) members; //адреса
+         bytes32 adminRole; //информация об админской роли
+     }
+ 
+-    mapping(bytes32 => RoleData) private _roles; //хранилище информации о ролях
+-
++    ///@notice роль администратора
+     bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00; //роль администратора
+ 
++    mapping(bytes32 => RoleData) private _roles; //хранилище информации о ролях    
++
+     modifier onlyRole(bytes32 role) { //модификатор для проверки полномочий на вызов функции
+         _checkRole(role);
+         _;        
+@@ -22,55 +28,49 @@ abstract contract AccessControl is IAccessControl {
+ 
+     //функции интерфейса
+ 
+-    function getRoleAdmin (bytes32 role) public view returns(bytes32) {
+-        return _roles[role].adminRole;
+-    }
+-
+     /**
++     * @notice функция выдает роль на адрес
+      * @notice выдавать роль может только аккаунт с административными правами для выдаваемой роли
++     * @param role - выдаваемая роль
++     * @param account - адрес, которому выдается роль
+      */
+     function grantRole(bytes32 role, address account) public virtual onlyRole(getRoleAdmin(role)){
+         _grantRole(role, account);
+     }
+ 
+-    /**
++    /** 
++     * @notice функция отзывает у адреса роль 
+      * @notice отзывать роль может только аккаунт с административными правами для выдаваемой роли
++     * @param role - отзываемая роль
++     * @param account - адрес, у которого отзывается роль
+      */
+     function revokeRole(bytes32 role, address account) public virtual onlyRole(getRoleAdmin(role)){
+         _revokeRole(role, account);
+     }
+     
++    /**
++     * @notice функция возвращает админскую роль для заданной роли
++     * @param role - роль, для которой делаем запрос
++     * @return bytes32 админская роль
++     */
++    function getRoleAdmin (bytes32 role) public view returns(bytes32) {
++        return _roles[role].adminRole;
++    }
++
+     //вспомогательные и служебные функции
+     
+     /**
+      * @notice функция для проверки наличия роли
+      * @param role - запрашиваемая роль 
+      * @param account - проверяемый адрес
++     * @return bool факт наличия (true) или остутсвие (false) соответствующей роли
+      */
+     function hasRole(bytes32 role, address account) public view virtual returns(bool) {
+         return _roles[role].members[account];
+     }
+-
+-    /**
+-     * @notice функция-обертка для подтверждения наличия роли
+-     * @param role - требуемая роль
+-     */
+-    function _checkRole(bytes32 role) internal view virtual returns(bool) {
+-        return _checkRole(role, msg.sender);
+-    }
+-
+-    /**
+-     * @notice функция для подтверждения, что у аккаунта есть соответстующия роль
+-     * @param role - требуемая роль
+-     * @param account - проверяемый адрес
+-     */
+-    function _checkRole(bytes32 role, address account) internal view virtual returns(bool) {
+-        require(hasRole(role, account), UnauthorizedAccount(account, role));
+-        return true;
+-    }
+-
++    
+     /**
+-     * @notice внутренняя функция для назначения для роли админиской роли
++     * @notice внутренняя функция для назначения для роли админской роли
+      * @param role - роль, для которой назначается админ
+      * @param adminRole - назначаемая админская роль
+      */
+@@ -94,7 +94,8 @@ abstract contract AccessControl is IAccessControl {
+     }
+     /**
+      * @notice внутренняя функция для отзыва роли
+-     * функция не содержит проверки на полномочия, то есть может вызываться самим контрактом без выдачи специальных полнломочй
++     * функция не содержит проверки на полномочия, то есть может вызываться 
++     * самим контрактом без выдачи специальных полнломочй
+      * @param role - отзываемя роль
+      * @param account - аккаунт, у которого отзывается роль
+      */
+@@ -104,4 +105,24 @@ abstract contract AccessControl is IAccessControl {
+             emit RoleRevoked(role, account, msg.sender);
+         }        
+     }    
++
++    /**
++     * @notice функция-обертка для подтверждения наличия роли
++     * @param role - требуемая роль
++     * @return bool факт наличия (true) или остутсвие (false) соответствующей роли
++     */
++    function _checkRole(bytes32 role) internal view virtual returns(bool) {
++        return _checkRole(role, msg.sender);
++    }
++
++    /**
++     * @notice функция для подтверждения, что у аккаунта есть соответстующия роль
++     * @param role - требуемая роль
++     * @param account - проверяемый адрес
++     * @return bool факт наличия (true) или остутсвие (false) соответствующей роли
++     */
++    function _checkRole(bytes32 role, address account) internal view virtual returns(bool) {
++        require(hasRole(role, account), UnauthorizedAccount(account, role));
++        return true;
++    }
+ }
+\ No newline at end of file
+diff --git a/contracts/erc20/AmetistToken.sol b/contracts/erc20/AmetistToken.sol
+index c8da0f5..41c4b14 100644
+--- a/contracts/erc20/AmetistToken.sol
++++ b/contracts/erc20/AmetistToken.sol
+@@ -2,16 +2,23 @@
+ // Compatible with OpenZeppelin Contracts ^5.0.0
+ pragma solidity ^0.8.29;
+ 
+-import "@openzeppelin/contracts/token/ERC20/ERC20.sol"; //импортируем основной функционал токена ЕRC20
+-import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol"; //импортируем интерфейс метаданных
++//импортируем основной функционал токена ЕRC20
++import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol"; 
+ 
+-import "./ERC20Permit.sol";
+-import "./AccessControl.sol";
++import { ERC20Permit } from "./ERC20Permit.sol";
++import { AccessControl } from "./AccessControl.sol";
+ 
++/**
++ * @title AmetistToken 
++ * @author mangert
++ * @notice контракт ERC20, реализующий механизм ERC20Permit
++ */
+ contract AmetistToken is ERC20, ERC20Permit, AccessControl {    
+ 
+-    bytes32 public constant MINTER_ROLE = keccak256(bytes("MINTER_ROLE")); //создаем роль "минтера"
++    /// @notice создаем роль минтера
++    bytes32 public constant MINTER_ROLE = keccak256(bytes("MINTER_ROLE"));
+ 
++    /// @notice в конструкторе выдаются роли "по умолчанию" на деплоера
+     constructor()  ERC20("Ametist", "AME") ERC20Permit("Ametist")
+     { 
+         //делаем начальные установки ролей
+@@ -20,8 +27,15 @@ contract AmetistToken is ERC20, ERC20Permit, AccessControl {
+         _setRoleAdmin(MINTER_ROLE, DEFAULT_ADMIN_ROLE); //назначаем "админа по умолчанием" админом роли "минтер"
+     }
+ 
+-    //функцию может вызывать только адрес с соответстующей ролью
+-    function mint(address to, uint256 amount) onlyRole(MINTER_ROLE) external {
++
++    //solhint-disable comprehensive-interface
++    /**
++     * @notice функция позволяет минтить токены
++     * @notice функцию может вызывать только адрес с соответстующей ролью
++     * @param to адрес куда будем минтить токены
++     * @param amount количество минтящихся токенов
++     */
++    function mint(address to, uint256 amount) external onlyRole(MINTER_ROLE) {
+         _mint(to, amount);
+     }
+ }
+\ No newline at end of file
+diff --git a/contracts/erc20/ERC20Permit.sol b/contracts/erc20/ERC20Permit.sol
+index b3b88c7..987bf1d 100644
+--- a/contracts/erc20/ERC20Permit.sol
++++ b/contracts/erc20/ERC20Permit.sol
+@@ -3,14 +3,18 @@ pragma solidity ^0.8.29;
+ 
+ import {IERC20Permit} from "./IERC20Permit.sol";
+ 
+-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+-import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+-import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
+-import "@openzeppelin/contracts/utils/Nonces.sol";
++import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
++import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
++import { EIP712 } from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
++import { Nonces } from "@openzeppelin/contracts/utils/Nonces.sol";
+ 
++/// @notice абстрактный контракт содержит функционал permit для токена ERC20
++/// @title ERC20Permit
++/// @author mangert
+ abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712, Nonces{
+     
+     //константа  для описания формы сообщения, которое пользователь должен подписать при вызове
++    // solhint-disable-next-line gas-small-strings
+     bytes32 private constant PERMIT_TYPEHASH = keccak256
+         ("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)");
+ 
+@@ -28,9 +32,20 @@ abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712, Nonces{
+      */
+     error ERC2612InvalidSigner(address signer, address owner);    
+     
++    /// @notice конструктор определяет константы пермит
++    /// @param name задает имя токена
+     constructor(string memory name) EIP712(name, "1") {}
+ 
+     //реализация функции интерфейса IERC20Permit
++    
++    /// @notice функция создает permit-approve
++    /// @param owner владелец
++    /// @param spender адрес, на который аппрувим
++    /// @param value сумма
++    /// @param deadline срок действия разрешения
++    /// @param v компонент подписи
++    /// @param r компонент подписи
++    /// @param s компонент подписи
+     function permit(
+         address owner,
+         address spender,
+@@ -40,6 +55,8 @@ abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712, Nonces{
+         bytes32 r,
+         bytes32 s
+     ) external virtual {
++        // solhint-disable not-rely-on-time
++        // solhint-disable-next-line gas-strict-inequalities
+         require(block.timestamp <= deadline, ERC2612ExpiredSignature(deadline)); //сначала проверяем дедлайн
+         
+         bytes32 structHash = keccak256( //формируем message
+@@ -52,6 +69,7 @@ abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712, Nonces{
+                 deadline
+             )
+         );
++        // solhint-enable not-rely-on-time
+ 
+         bytes32 hash = _hashTypedDataV4(structHash); //формируем digest (полная хэш-структура по EIP-712):
+ 
+@@ -61,21 +79,26 @@ abstract contract ERC20Permit is ERC20, IERC20Permit, EIP712, Nonces{
+         
+         _approve(owner, spender, value); //даем разрешение на использование токенов
+             
+-    }    
++    }
++
++    // solhint-disable func-name-mixedcase
++    /**
++     * @notice Реализация стандартной функции для интерфейса IERC20Permit
++     * @return bytes32 домен для шифрования      
++     */
++    function DOMAIN_SEPARATOR() external view returns (bytes32) {
++        return _domainSeparatorV4(); //обращаемся к стандартной функции
++    }
++    // solhint-enable func-name-mixedcase               
+ 
+     /**
+      * @notice Реализация публичной функции для интерфейса IERC20Permit
+      * @notice Функция проксирует вызов к Nonces, где всё хранится и обновляется.
+      * @param owner - адрес владельца, для которого считаем нонсы
++     * @return uint256 нонс владельца
+      */
+     function nonces(address owner) public view virtual override(IERC20Permit, Nonces) returns (uint256) {
+         return super.nonces(owner);
+-    }
++    }   
+     
+-    /**
+-     * @notice Реализация стандартной функции для интерфейса IERC20Permit
+-     */
+-    function DOMAIN_SEPARATOR() external view returns (bytes32) {
+-        return _domainSeparatorV4(); //обращаемся к реализации oppenzeppelin
+-    }        
+ }
+\ No newline at end of file
+diff --git a/contracts/erc20/IAccessControl.sol b/contracts/erc20/IAccessControl.sol
+index 5d394c6..5cb42d8 100644
+--- a/contracts/erc20/IAccessControl.sol
++++ b/contracts/erc20/IAccessControl.sol
+@@ -3,6 +3,7 @@ pragma solidity ^0.8.29;
+ 
+ /**
+  * @title IAccessControl
++ * @author openzeppelin
+  * @notice интерфейс для ролевой системы в контракте ERC20
+  */
+ 
+@@ -51,12 +52,6 @@ interface IAccessControl {
+      */
+     error UnauthorizedAccount(address account, bytes32 role);
+     
+-    /**
+-     * @notice функция возвращает админскую роль для заданной роли
+-     * @param role - роль, для которой делаем запрос
+-     */
+-    function getRoleAdmin(bytes32 role) external view returns(bytes32);
+-
+     /**
+      * @notice функция выдает роль на адрес
+      * @param role - выдаваемая роль
+@@ -70,4 +65,12 @@ interface IAccessControl {
+      * @param account - адрес, у которого отзывается роль
+      */
+     function revokeRole(bytes32 role, address account) external;     
++
++    /**
++     * @notice функция возвращает админскую роль для заданной роли
++     * @param role - роль, для которой делаем запрос
++     * @return bytes32 админская роль
++     */
++    function getRoleAdmin(bytes32 role) external view returns(bytes32);  
++    
+ }
+\ No newline at end of file
+diff --git a/contracts/erc20/IERC20Permit.sol b/contracts/erc20/IERC20Permit.sol
+index ef99ac2..567b56f 100644
+--- a/contracts/erc20/IERC20Permit.sol
++++ b/contracts/erc20/IERC20Permit.sol
+@@ -2,7 +2,8 @@
+ pragma solidity ^0.8.29;
+ 
+ /**
+- * @title IERC20Permit  
++ * @title IERC20Permit
++ * @author openzeppelin
+  * @notice Интерфейс расширения Permit для токенов стандарта ERC20 * 
+  */
+ 
+@@ -31,11 +32,13 @@ interface IERC20Permit {
+     /**
+      * @notice функция возращает текущий nonce по транзакциям выдачи разрешений на адрес владельца
+      * @param owner - адрес владельца
++     * @return uint256 нонс владельца
+      */
+     function nonces(address owner) external view returns (uint256);
+     
+     /**
+      * @notice функция возращает уникальный идентификатор “домена” подписей в контракте
++     * @return bytes32 домен для шифрования
+      */   
+     function DOMAIN_SEPARATOR() external view returns (bytes32);
+     
+diff --git a/contracts/factory/AccountBox.sol b/contracts/factory/AccountBox.sol
+index 5be7502..af6e835 100644
+--- a/contracts/factory/AccountBox.sol
++++ b/contracts/factory/AccountBox.sol
+@@ -2,20 +2,25 @@
+ pragma solidity ^0.8.29;
+ 
+ import { ETHAccountV2 } from "./ETHAccountV2.sol";
+-import "@openzeppelin/contracts/proxy/Clones.sol";
+-import "../libs/IDGenerator.sol";
++import { Clones } from "@openzeppelin/contracts/proxy/Clones.sol";
++import { IDGenerator } from "../libs/IDGenerator.sol";
++import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+ 
+ /**
+  * @title AccountBox  
++ * @author mangert
+  * @notice контракт-фабрика, реализует шаблон минимальных прокси для простых контрактов-счетов
+  */
+-contract AccountBox {
++contract AccountBox is ReentrancyGuard {
+     
+-    address public immutable implementation; //ссылка на контракт-шаблон
++    // solhint-disable immutable-vars-naming
++    /// @notice ссылка на контракт-шаблон
++    address public immutable implementation;
++    // solhint-enable immutable-vars-naming 
+     
+     //хранилище созданных счетов
+     mapping (address client => mapping (bytes4 id => address account)) private accounts;    
+-    //счетчики для адресов
++    /// @notice счетчики для адресов
+     mapping(address => uint8) public userCounters;
+ 
+     /**
+@@ -24,20 +29,26 @@ contract AccountBox {
+      * @param id - идентификатор 
+      * @param account - адрес созданного счета
+      */
+-    event AccountCreated(address indexed owner, bytes4 indexed id, address account);    
++    event AccountCreated(address indexed owner, bytes4 indexed id, address indexed account);    
+     
++    /// @notice в конструкторе определяется адрес имплементации контракта-счета
++    /// @param trustedForwarder адрес доверенного форвардера, которым будут пользоваться контраткты-счета    
+     constructor(address trustedForwarder) {        
+         implementation = address(new ETHAccountV2(trustedForwarder));
+     }   
+     
++    //solhint-disable comprehensive-interface
+     /**
+      * @notice функция создает новый минимальный прокси для шаблонного контракта-счета
++     * @return address созданный контракт минимального прокси
+      */
+-    function createClone() external returns (address) {
++    function createClone() external nonReentrant returns (address) {
+         
+         address payable clone = payable (Clones.clone(implementation)); //создаем клон
+ 
+-        ETHAccountV2(clone).initialize(userCounters[msg.sender]++, msg.sender); //инициализируем и увеличиваем для пользователя счетчик
++        //инициализируем и увеличиваем для пользователя счетчик
++        // solhint-disable-next-line gas-increment-by-one
++        ETHAccountV2(clone).initialize(userCounters[msg.sender]++, msg.sender); 
+         
+         bytes4 accountId = ETHAccountV2(clone).accountID(); //получаем ID
+         accounts[msg.sender][accountId] = clone; //записываем в хранилище
+@@ -51,6 +62,7 @@ contract AccountBox {
+      * @notice функция возращает адрес прокси-аккаунта исходя из адреса владельца и его индекса создания
+      * @param owner - адрес владельца для поиска
+      * @param index - индекс (по порядку создания)
++     * @return address прокси контракт по локальному индексу владельца
+      */
+     function getAccountByIndex(address owner, uint8 index) public view returns (address) {
+         bytes4 id = IDGenerator.computeId(owner, index);
+diff --git a/contracts/factory/ETHAccountV2.sol b/contracts/factory/ETHAccountV2.sol
+index 4074f43..392da3c 100644
+--- a/contracts/factory/ETHAccountV2.sol
++++ b/contracts/factory/ETHAccountV2.sol
+@@ -3,18 +3,21 @@ pragma solidity ^0.8.29;
+ 
+ import { IETHAccount } from "../commonInterfaces/IETHAccount.sol";
+ import { ERC2771Context } from "../meta/ERC2771Context.sol";
+-import "../libs/IDGenerator.sol";
++import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
++import { IDGenerator } from "../libs/IDGenerator.sol";
+ 
+ /**
+  * @title ETHAccount
++ * @author mangert
+  * @notice версия контракта для использования через CloneFactory  
+  */
+ 
+-contract ETHAccountV2 is IETHAccount, ERC2771Context {
++contract ETHAccountV2 is IETHAccount, ERC2771Context, ReentrancyGuard {
+     
+-    bytes4 public accountID; // идентификатор 
++    /// @notice идентификатор счета
++    bytes4 public accountID; 
+     address private owner; //владелец
+-    bool _initialized; //флаг инициализации клона
++    bool private _initialized; //флаг инициализации клона
+ 
+     error ReInitializationdAccout();
+ 
+@@ -23,23 +26,37 @@ contract ETHAccountV2 is IETHAccount, ERC2771Context {
+         _;
+     }
+ 
++    /// @notice в конструкторе определяется адрес доверенного форвардера
++    /// @param trustedForwarder_ адрес доверенного форвардера
+     constructor(address trustedForwarder_) ERC2771Context(trustedForwarder_){}
+ 
++    //solhint-disable comprehensive-interface
++    /// @notice на случай, если пользователь просто кинет деньги
++    /// @notice без вызова функции - по сути, просто дублируем deposit
++    receive() external payable { 
++        emit Deposited(_msgSender(), msg.value);
++    }
++
++    /// @notice функция инициализации нужна, так как требуется устанавливать параметры
++    /// после деплоя фабрикой
++    /// @param _id - индекс, передается фабрикой при вызове
++    /// @param _owner - владелец счета    
+     function initialize(uint8 _id, address _owner) external {
+         
+         require(!_initialized, ReInitializationdAccout()); 
+         _initialized = true;
+         
+-        accountID = IDGenerator.computeId(_owner, _id); //формируем идентификатор исходя из переданного индекса и адреса владельца
++        //формируем идентификатор исходя из переданного индекса и адреса владельца
++        accountID = IDGenerator.computeId(_owner, _id); 
+         owner = _owner; //назначаем владельца;
+-    }    
++    }   
++    //solhint-enable comprehensive-interface
+    
+-
+     //реализация функций интерфейса IETHAccount
+     /**
+      * @notice функция принимает вклад на контракт
+      */
+-    function deposit() external payable { 
++    function deposit() external override payable { 
+         emit Deposited(_msgSender(), msg.value);
+     }
+ 
+@@ -52,17 +69,11 @@ contract ETHAccountV2 is IETHAccount, ERC2771Context {
+     function withdraw( 
+         address payable recipient,
+         uint256 amount
+-    ) external onlyOwner { //функция вывода
++    ) external override onlyOwner nonReentrant { //функция вывода
+         _withdrawInternal(recipient, amount);        
+     } 
+ 
+-    //служебные функции        
+-
+-    //на случай, если пользователь просто кинет деньги
+-    //без вызова функции - по сути, просто дублируем deposit
+-    receive() external payable { 
+-        emit Deposited(_msgSender(), msg.value);
+-    }
++    //служебные функции            
+     
+     /**
+      * @notice служебная функция вывода средств
+@@ -73,11 +84,13 @@ contract ETHAccountV2 is IETHAccount, ERC2771Context {
+         address payable recipient,
+         uint256 amount
+     ) internal {
++        require(recipient != address(0), ZeroAddressProvided());
++        // solhint-disable-next-line gas-strict-inequalities
+         require(amount <= address(this).balance, InsufficientFunds(amount, address(this).balance)); //проверяем баланс
+ 
+-        (bool success, ) = recipient.call{value: amount}("");
+-        require(success, WitdrawFailed(recipient, amount)); 
++        emit Withdrawed(recipient, amount);
+ 
+-    emit Withdrawed(recipient, amount);
++        (bool success, ) = recipient.call{value: amount}("");
++        require(success, WitdrawFailed(recipient, amount));     
+     }
+ }
+\ No newline at end of file
+diff --git a/contracts/libs/IDGenerator.sol b/contracts/libs/IDGenerator.sol
+index f8d79d6..6809aa7 100644
+--- a/contracts/libs/IDGenerator.sol
++++ b/contracts/libs/IDGenerator.sol
+@@ -3,6 +3,7 @@ pragma solidity ^0.8.29;
+ 
+ /**
+  * @title IDGenerator 
++ * @author mangert
+  * @notice сделано для унификации метода расчета идентификатора счета при создании счета и в контракте-фабрике
+  */
+ library IDGenerator {
+@@ -10,7 +11,8 @@ library IDGenerator {
+     /**
+      * @notice возвращает расчетное значение идентификатора
+      * @param owner - адрес владельца счета
+-     * @param index - индекс 
++     * @param index - индекс
++     * @return bytes4 расчетный ID 
+      */
+     function computeId(address owner, uint8 index) internal pure returns (bytes4) {
+         return bytes4(keccak256(abi.encode(index, owner)));
+diff --git a/contracts/meta/ERC2771Context.sol b/contracts/meta/ERC2771Context.sol
+index 4c7e8bf..1e5ae97 100644
+--- a/contracts/meta/ERC2771Context.sol
++++ b/contracts/meta/ERC2771Context.sol
+@@ -5,18 +5,24 @@ pragma solidity ^0.8.29;
+ import { Context } from "@openzeppelin/contracts/utils/Context.sol";
+ 
+ /**
+- * 
++ * @title  ERC2771Context
++ * @notice из библиотетки openzeppelin, включен для использования в ETHAccount2771
++ * @author @openzeppelin
+  */
+ abstract contract ERC2771Context is Context {    
+     
++    // solhint-disable-next-line immutable-vars-naming
+     address private immutable _trustedForwarder; //ссылка на контракт-форвардер
+     
++    /// @notice конструктор устанавливает доверенного форвардера
++    /// @param trustedForwarder_ адрес форвардера
+     constructor(address trustedForwarder_) {
+         _trustedForwarder = trustedForwarder_;
+     }
+ 
+     /**
+      * @notice функция возвращает адрес контракта-форвардера
++     * @return address доверенный форвардер
+      */
+     function trustedForwarder() public view virtual returns (address) {
+         return _trustedForwarder;
+@@ -24,7 +30,8 @@ abstract contract ERC2771Context is Context {
+ 
+     /**
+      * @notice Функция проверяет, является ли контракт зарегистрированным форвардером
+-     * @param адрес контракта для проверки
++     * @param forwarder адрес контракта для проверки
++     * @return bool результат проверки
+      */
+     function isTrustedForwarder(address forwarder) public view virtual returns (bool) {
+         return forwarder == trustedForwarder();
+@@ -34,10 +41,12 @@ abstract contract ERC2771Context is Context {
+      * @notice функция вытаскивает отправителя транзакции (перегрузка из Context)
+      * если длина сообщения меньше длины адреса, или сообщение пришло не от зарегистрированного форвардера,
+      * возвращается оригинальный msg.sender
++     * @return address отправитель транзакции
+      */
+     function _msgSender() internal view virtual override returns (address) {
+         uint256 calldataLength = msg.data.length;
+         uint256 contextSuffixLength = _contextSuffixLength();
++        // solhint-disable-next-line gas-strict-inequalities
+         if (isTrustedForwarder(msg.sender) && calldataLength >= contextSuffixLength) { //если вызов пришел от forwarder
+             return address(bytes20(msg.data[calldataLength - contextSuffixLength:])); //берем "хвост" от данных
+         } else {
+@@ -49,10 +58,12 @@ abstract contract ERC2771Context is Context {
+      * @notice функция вытаскивает соодержание сообщения (перегрузка из Context)
+      * если длина сообщения больше длины адреса и сообщение пришло от зарегистрированного форвардера,
+      * отрезается "хвост" - 20 байт адреса отправителя транзакции, в противном случае возвращается сообщение целиком
++     * @return bytes содержание сообщения
+      */
+     function _msgData() internal view virtual override returns (bytes calldata) {
+         uint256 calldataLength = msg.data.length;
+         uint256 contextSuffixLength = _contextSuffixLength();
++        // solhint-disable-next-line gas-strict-inequalities
+         if (isTrustedForwarder(msg.sender) && calldataLength >= contextSuffixLength) {
+             return msg.data[:calldataLength - contextSuffixLength]; //берем данные без "Хвоста" - отрезаем msg.sender
+         } else {
+@@ -62,6 +73,7 @@ abstract contract ERC2771Context is Context {
+ 
+     /**
+      * @notice функция возвращает длину адреса отправителя (перегрузка из Context)
++     * @return uint256 длина суффикса контекста
+      */
+     function _contextSuffixLength() internal view virtual override returns (uint256) {
+         return 20;
+diff --git a/contracts/meta/ERC2771Forwarder.sol b/contracts/meta/ERC2771Forwarder.sol
+index 75580da..133ecb7 100644
+--- a/contracts/meta/ERC2771Forwarder.sol
++++ b/contracts/meta/ERC2771Forwarder.sol
+@@ -10,13 +10,21 @@ import { Address } from "@openzeppelin/contracts/utils/Address.sol";
+ import { Errors } from "@openzeppelin/contracts/utils/Errors.sol";
+ 
+ /**
++ * @title ERC2771Forwarder 
+  * @notice отдельный "форвардер"
+  * из библиотетки openzeppelin, включен для использования в ETHAccount2771
++ * @author @openzeppelin
+  */
+ contract ERC2771Forwarder is EIP712, Nonces {
+     using ECDSA for bytes32; //псевдоним типа для удобства
+ 
+-    //структура для сообщения-запроса на выполнение
++    
++    /// @notice Структура EIP-2771 для описания мета-транзакции.
++    /// @dev Порядок полей и их типы строго соответствуют стандарту.
++    /// Несмотря на предупреждения линтера (упаковка в storage не оптимальна),
++    /// поля не могут быть переставлены без нарушения совместимости
++    /// с EIP-712 / forwarder-подписью.    
++    // solhint-disable gas-struct-packing
+     struct ForwardRequestData {
+         address from; //"настоящий" пользователь, который подписал вызов
+         address to;  //адрес "целевого" контракта
+@@ -26,13 +34,16 @@ contract ERC2771Forwarder is EIP712, Nonces {
+         bytes data; //селектор вызываемой функции с аргументами
+         bytes signature; //подпись
+     }
++    // solhint-enable gas-struct-packing
+ 
+-    //константа  для описания формы сообщения, которое пользователь должен подписать при вызове
++    //константа  для описания формы сообщения, которое пользователь должен подписать при вызове    
+     bytes32 internal constant _FORWARD_REQUEST_TYPEHASH =
++        // solhint-disable-next-line gas-small-strings
+         keccak256(
+             "ForwardRequest(address from,address to,uint256 value,uint256 gas,uint256 nonce,uint48 deadline,bytes data)"
+         );
+ 
++    //solhint-disable gas-indexed-events
+     /**
+      * @notice порождается в случае исполнения запроса на выполнение функции
+      * @param signer - пользователь, подписавший сообщение
+@@ -40,6 +51,7 @@ contract ERC2771Forwarder is EIP712, Nonces {
+      * @param  success - результат вызова
+      */
+     event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success);
++    //solhint-enable gas-indexed-events
+ 
+     /**
+      * @notice ошибка индицирует неверного подписанта
+@@ -69,17 +81,11 @@ contract ERC2771Forwarder is EIP712, Nonces {
+     error ERC2771UntrustfulTarget(address target, address forwarder);
+ 
+     
++    /// @notice конструктор устанавливает параметры форвардера
++    /// @param name имя нашего форвардера
+     constructor(string memory name) EIP712(name, "1") {}    
+ 
+-    /**
+-     * @notice функция возращает результат проверки форвардера целевого контаркта, подписанта и дедлайна 
+-     * @param request - сообщение-запрос на вызов функции
+-     */
+-    function verify(ForwardRequestData calldata request) public view virtual returns (bool) {
+-        (bool isTrustedForwarder, bool active, bool signerMatch, ) = _validate(request);
+-        return isTrustedForwarder && active && signerMatch;
+-    }
+-
++    //solhint-disable comprehensive-interface
+     /**
+      * @notice функция выполняет запрос на целевом контракте
+      * @param request - сообщение-запрос
+@@ -104,9 +110,12 @@ contract ERC2771Forwarder is EIP712, Nonces {
+         ForwardRequestData[] calldata requests,
+         address payable refundReceiver
+     ) public payable virtual {
+-        bool atomic = refundReceiver == address(0); //если задан нулевой адрес возврата, то будем запускать execute с true
+-
++        //если задан нулевой адрес возврата, то будем запускать execute с true
++        bool atomic = refundReceiver == address(0); 
++        
++        // slither-disable-next-line uninitialized-local-variables
+         uint256 requestsValue;
++        // slither-disable-next-line uninitialized-local-variables
+         uint256 refundValue;
+ 
+         //цикл выполнения
+@@ -117,7 +126,6 @@ contract ERC2771Forwarder is EIP712, Nonces {
+                 refundValue += requests[i].value;
+             }
+         }
+-
+         
+         if (requestsValue != msg.value) { //проверяем достаточность суммы
+             revert ERC2771ForwarderMismatchedValue(requestsValue, msg.value);
+@@ -129,58 +137,23 @@ contract ERC2771Forwarder is EIP712, Nonces {
+             Address.sendValue(refundReceiver, refundValue);
+         }
+     }
+-
+-    /**
+-     * @notice служебная функция проверяет параметры запроса - указан ли в целевом контракте этот контракт как доверенный форвардер,
+-     * не истек ли дедлайн, действительна ли подпись и возвращает соответстующие значения и подписанта
+-     * @param request - запрос
+-     * @return isTrustedForwarder - форвардер зарегистрирован в целевом контракте
+-     * @return active - дедлайн не истек
+-     * @return signerMatch - подпись совпала 
+-     * @return signer - подписант
+-     */
+-    function _validate(
+-        ForwardRequestData calldata request
+-    ) internal view virtual returns (bool isTrustedForwarder, bool active, bool signerMatch, address signer) {
+-        (bool isValid, address recovered) = _recoverForwardRequestSigner(request);
+-
+-        return (
+-            _isTrustedByTarget(request.to),
+-            request.deadline >= block.timestamp,
+-            isValid && recovered == request.from,
+-            recovered
+-        );
+-    }
+-
++    
+     /**
+-     * @notice служебная функция - возращает из сообщения подписанта и проверяет валидность подписи
+-     * @param request - сообщение-запрос на выполнение функций     
++     * @notice функция возращает результат проверки форвардера целевого контаркта, подписанта и дедлайна 
++     * @param request - сообщение-запрос на вызов функции
++     * @return bool результат проверки запроса
+      */
+-    function _recoverForwardRequestSigner(
+-        ForwardRequestData calldata request
+-    ) internal view virtual returns (bool isValid, address signer) {
+-        (address recovered, ECDSA.RecoverError err, ) = _hashTypedDataV4(
+-            keccak256(
+-                abi.encode(
+-                    _FORWARD_REQUEST_TYPEHASH,
+-                    request.from,
+-                    request.to,
+-                    request.value,
+-                    request.gas,
+-                    nonces(request.from),
+-                    request.deadline,
+-                    keccak256(request.data)
+-                )
+-            )
+-        ).tryRecover(request.signature);
+-
+-        return (err == ECDSA.RecoverError.NoError, recovered);
++    function verify(ForwardRequestData calldata request) public view virtual returns (bool) {
++        (bool isTrustedForwarder, bool active, bool signerMatch, ) = _validate(request);
++        return isTrustedForwarder && active && signerMatch;
+     }
+-
++    
+     /**
+      * @notice внутренняя функция, выполняющая запрос
+      * @param request - сообщение-запрос
+-     * @param requireValidRequest - признак указывает, как организовать проверки запроса - ревертить при ошибках или просто не выполнять запрос
++     * @param requireValidRequest - признак указывает, как организовать проверки запроса
++     *  - ревертить при ошибках или просто не выполнять запрос
++     * @return success результат выполнения запроса
+      */
+     function _execute(
+         ForwardRequestData calldata request,
+@@ -203,7 +176,8 @@ contract ERC2771Forwarder is EIP712, Nonces {
+             }
+         }
+         
+-        if (isTrustedForwarder && signerMatch && active) { //если форвардер поддерживается, подпись валидна и дедлайн не прошел
++        //если форвардер поддерживается, подпись валидна и дедлайн не прошел
++        if (isTrustedForwarder && signerMatch && active) { 
+             // будем выполнять запрос
+             uint256 currentNonce = _useNonce(signer); //берем nonce
+ 
+@@ -214,20 +188,81 @@ contract ERC2771Forwarder is EIP712, Nonces {
+ 
+             uint256 gasLeft;
+             //низкоуровневый вызов функции целевого контракта
++            // solhint-disable no-inline-assembly
+             assembly ("memory-safe") {
+                 success := call(reqGas, to, value, add(data, 0x20), mload(data), 0, 0)
+                 gasLeft := gas()
+             }
++            // solhint-enable no-inline-assembly
+ 
+             _checkForwardedGas(gasLeft, request); //проверяем оставшийся газ
+ 
+-            emit ExecutedForwardRequest(signer, currentNonce, success); //эмитируем событие, что запрос выполнен успешно или нет
++            //эмитируем событие, что запрос выполнен успешно или нет
++            emit ExecutedForwardRequest(signer, currentNonce, success); 
+         }
+     }
+ 
++    //solhint-enable comprehensive-interface
++
++    /**
++     * @notice служебная функция проверяет параметры запроса - указан ли 
++     * в целевом контракте этот контракт как доверенный форвардер,
++     * не истек ли дедлайн, действительна ли подпись и возвращает соответстующие значения и подписанта
++     * @param request - запрос
++     * @return isTrustedForwarder - форвардер зарегистрирован в целевом контракте
++     * @return active - дедлайн не истек
++     * @return signerMatch - подпись совпала 
++     * @return signer - подписант
++     */
++    function _validate(
++        ForwardRequestData calldata request
++    ) internal view virtual returns (bool isTrustedForwarder, bool active, bool signerMatch, address signer) {
++        (bool isValid, address recovered) = _recoverForwardRequestSigner(request);
++
++        return (
++            _isTrustedByTarget(request.to),
++            //solhint-disable not-rely-on-time
++            //solhint-disable gas-strict-inequalities            
++            // slither-disable-next-line timestamp
++            request.deadline >= block.timestamp,
++            isValid && recovered == request.from,
++            recovered
++            //solhint-enable gas-strict-inequalities            
++            //solhint-enable not-rely-on-time            
++        );
++    }
++
++    /**
++     * @notice служебная функция - возращает из сообщения подписанта и проверяет валидность подписи
++     * @param request - сообщение-запрос на выполнение функций
++     * @return isValid результат проверки на валидность
++     * @return signer адрес, подписавший сообщение
++     */
++    function _recoverForwardRequestSigner(
++        ForwardRequestData calldata request
++    ) internal view virtual returns (bool isValid, address signer) {
++        (address recovered, ECDSA.RecoverError err, ) = _hashTypedDataV4(
++            keccak256(
++                abi.encode(
++                    _FORWARD_REQUEST_TYPEHASH,
++                    request.from,
++                    request.to,
++                    request.value,
++                    request.gas,
++                    nonces(request.from),
++                    request.deadline,
++                    keccak256(request.data)
++                )
++            )
++        ).tryRecover(request.signature);
++
++        return (err == ECDSA.RecoverError.NoError, recovered);
++    }
++
+     /**
+      * @notice служебная функция проверяет, является ли наш форвардер доверенным на целевом контракте
+      * @param target - адрес целевого контаркта
++     * @return bool, является ли этот контракт доверенным форвардером в целевом
+      */
+     function _isTrustedByTarget(address target) internal view virtual returns (bool) {
+         bytes memory encodedParams = abi.encodeCall(ERC2771Context.isTrustedForwarder, (address(this)));
+@@ -235,12 +270,14 @@ contract ERC2771Forwarder is EIP712, Nonces {
+         bool success;
+         uint256 returnSize;
+         uint256 returnValue;
++        // solhint-disable no-inline-assembly
+         assembly ("memory-safe") { //делаем низкоуровневый вызов функции isTrustedForwarder на целевом контракте
+             success := staticcall(gas(), target, add(encodedParams, 0x20), mload(encodedParams), 0, 0x20)
+             returnSize := returndatasize()
+             returnValue := mload(0)
+         }
+-
++        // solhint-enable no-inline-assembly
++        // solhint-disable-next-line gas-strict-inequalities
+         return success && returnSize >= 0x20 && returnValue > 0;
+     }
+ 
+@@ -253,11 +290,13 @@ contract ERC2771Forwarder is EIP712, Nonces {
+      */
+     function _checkForwardedGas(uint256 gasLeft, ForwardRequestData calldata request) private pure {
+         
+-        if (gasLeft < request.gas / 63) { //проверяем, что оставшийся после вызова газ меньше, чем EVM оставляет себе по правилу 63/64
+-            
++        //проверяем, что оставшийся после вызова газ меньше, чем EVM оставляет себе по правилу 63/64
++        if (gasLeft < request.gas / 63) {
++            // solhint-disable no-inline-assembly
+             assembly ("memory-safe") { //и если меньше, ревертим транзакцию
+                 invalid() //гарантированно откатывает транзакцию и сжигает весь газ
+             }
++            // solhint-enable no-inline-assembly
+         }
+     }
+ }
+\ No newline at end of file
+diff --git a/contracts/meta/ETHAccountV1.sol b/contracts/meta/ETHAccountV1.sol
+index 7dfc6c1..d1845eb 100644
+--- a/contracts/meta/ETHAccountV1.sol
++++ b/contracts/meta/ETHAccountV1.sol
+@@ -3,17 +3,23 @@ pragma solidity ^0.8.29;
+ 
+ import { IETHAccount } from "../commonInterfaces/IETHAccount.sol";
+ import { ERC2771Context } from "./ERC2771Context.sol";
+-import "../libs/IDGenerator.sol";
++import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
++import { IDGenerator } from "../libs/IDGenerator.sol";
+ 
+ /**
+  * @title ETHAccount2771
+- * @notice пример контракта для демонстрации механизма метатранзакций с использованием
++ * @notice пример контракта для демонстрации механизма метатранзакций с использованием 
+  * стандарта ERC2771
++ * @author mangert
+  */
+ 
+-contract ETHAccountV1 is IETHAccount, ERC2771Context {
++contract ETHAccountV1 is IETHAccount, ERC2771Context, ReentrancyGuard {
++    
++    // solhint-disable immutable-vars-naming
++    ///@notice уникальный идентификатор счета    
++    bytes4 public immutable accountID; 
++    // solhint-enable immutable-vars-naming
+     
+-    bytes4 public immutable accountID; // идентификатор 
+     address private owner; //владелец
+ 
+     modifier onlyOwner() { //модификатор для контроля вывода
+@@ -21,17 +27,29 @@ contract ETHAccountV1 is IETHAccount, ERC2771Context {
+         _;
+     }
+ 
++    /// @notice конструктор устанавливает владельца, доверенного форвардера и рассчитывает id счета
++    /// @param _id индекс, на основании которого будет формироваться уникальный ID
++    /// @param trustedForwarder_ адрес доверенного форвардера
+     constructor(uint8 _id, address trustedForwarder_) ERC2771Context (trustedForwarder_) {
+               
+         owner = msg.sender; //назначаем владельца
+-        accountID = IDGenerator.computeId(owner, _id); //формируем идентификатор исходя из переданного индекса и адреса владельца        
++        //формируем идентификатор исходя из переданного индекса и адреса владельца        
++        accountID = IDGenerator.computeId(owner, _id); 
++    }
++
++    //solhint-disable comprehensive-interface
++    /// @notice на случай, если пользователь просто кинет деньги
++    /// без вызова функции - по сути, просто дублируем deposit
++    receive() external payable { 
++        emit Deposited(_msgSender(), msg.value);
+     }
++    //solhint-enable comprehensive-interface
+ 
+     //реализация функций интерфейса IETHAccount
+     /**
+      * @notice функция принимает вклад на контракт
+      */
+-    function deposit() external payable { 
++    function deposit() external override payable { 
+         emit Deposited(_msgSender(), msg.value);
+     }
+ 
+@@ -44,17 +62,11 @@ contract ETHAccountV1 is IETHAccount, ERC2771Context {
+     function withdraw( 
+         address payable recipient,
+         uint256 amount
+-    ) external onlyOwner { //функция вывода
++    ) external override nonReentrant onlyOwner { //функция вывода
+         _withdrawInternal(recipient, amount);        
+     } 
+ 
+-    //служебные функции        
+-
+-    //на случай, если пользователь просто кинет деньги
+-    //без вызова функции - по сути, просто дублируем deposit
+-    receive() external payable { 
+-        emit Deposited(_msgSender(), msg.value);
+-    }
++    //служебные функции            
+     
+     /**
+      * @notice служебная функция вывода средств
+@@ -65,11 +77,13 @@ contract ETHAccountV1 is IETHAccount, ERC2771Context {
+         address payable recipient,
+         uint256 amount
+     ) internal {
++        require(recipient != address(0), ZeroAddressProvided());
++        // solhint-disable-next-line gas-strict-inequalities
+         require(amount <= address(this).balance, InsufficientFunds(amount, address(this).balance)); //проверяем баланс
+ 
+-        (bool success, ) = recipient.call{value: amount}("");
+-        require(success, WitdrawFailed(recipient, amount)); 
++        emit Withdrawed(recipient, amount);
+ 
+-    emit Withdrawed(recipient, amount);
++        (bool success, ) = recipient.call{value: amount}("");
++        require(success, WitdrawFailed(recipient, amount));     
+     }
+ }
+\ No newline at end of file
+diff --git a/contracts/test-helpers/ERC20Proxy.sol b/contracts/test-helpers/ERC20Proxy.sol
+index 15133c2..4862885 100644
+--- a/contracts/test-helpers/ERC20Proxy.sol
++++ b/contracts/test-helpers/ERC20Proxy.sol
+@@ -2,14 +2,28 @@
+ 
+ pragma solidity ^0.8.29;
+ 
+-import "../erc20/AmetistToken.sol";
++import { AmetistToken } from "../erc20/AmetistToken.sol";
+ 
+ /**
+  * @title ERC20Proxy
++ * @author mangert
+  * @notice вспомогательный контракт для тестирования функционала Permit в токене ERC20
+  */
+ contract ERC20Proxy {
++
++    //solhint-disable comprehensive-interface
+     
++    /**
++     * @notice вызываем функцию permit на токене от имени контракта
++     * @param token адрес токена
++     * @param owner владелец
++     * @param spender адрес, на кого выписываем permit
++     * @param value сумма
++     * @param deadline срок действия сообщения
++     * @param v компонент подписи
++     * @param r компонент подписи
++     * @param s компонент подписи
++     */
+     function doSend (    
+         address token,
+         address owner,
+@@ -22,9 +36,4 @@ contract ERC20Proxy {
+     ) external {
+         AmetistToken(token).permit(owner, spender, value, deadline, v, r, s);
+     }
+-
+-
+-    
+-
+-
+ }
+\ No newline at end of file
